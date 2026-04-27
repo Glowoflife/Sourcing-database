@@ -9,11 +9,19 @@ export const leadStatusEnum = pgEnum("lead_status", [
   "Errored",
 ]);
 
+export const sourcingStatusEnum = pgEnum("sourcing_status", [
+  "Unqualified",
+  "Approved",
+  "Rejected",
+  "Flagged",
+]);
+
 export const leads = pgTable("leads", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   url: text("url").notNull().unique(),
   status: leadStatusEnum("status").notNull().default("New"),
+  sourcingStatus: sourcingStatusEnum("sourcing_status").notNull().default("Unqualified"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow().$onUpdateFn(() => new Date()),
 });
@@ -108,6 +116,19 @@ export type NewContact = typeof contacts.$inferInsert;
 export type Location = typeof locations.$inferSelect;
 export type NewLocation = typeof locations.$inferInsert;
 
+// Phase 6: Sourcing notes
+export const leadNotes = pgTable("lead_notes", {
+  id: serial("id").primaryKey(),
+  leadId: integer("lead_id")
+    .notNull()
+    .references(() => leads.id),
+  content: text("content").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export type LeadNote = typeof leadNotes.$inferSelect;
+export type NewLeadNote = typeof leadNotes.$inferInsert;
+
 // Relations
 import { relations } from "drizzle-orm";
 
@@ -117,6 +138,14 @@ export const leadsRelations = relations(leads, ({ one, many }) => ({
     references: [manufacturerProfiles.leadId],
   }),
   manufacturerPages: many(manufacturerPages),
+  notes: many(leadNotes),
+}));
+
+export const leadNotesRelations = relations(leadNotes, ({ one }) => ({
+  lead: one(leads, {
+    fields: [leadNotes.leadId],
+    references: [leads.id],
+  }),
 }));
 
 export const manufacturerProfilesRelations = relations(manufacturerProfiles, ({ one, many }) => ({
