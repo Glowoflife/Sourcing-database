@@ -7,9 +7,9 @@
 ## Current Position
 
 **Phase**: 3 - Technical Acquisition Pipeline
-**Plan**: 03-02 (next)
+**Plan**: 03-03 (next)
 **Status**: Executing
-**Progress**: [████░░░░░░░░░░░░░░░░] 33% (2/6 phases complete, 1/4 plans in Phase 3 complete)
+**Progress**: [████░░░░░░░░░░░░░░░░] 33% (2/6 phases complete, 2/4 plans in Phase 3 complete)
 
 ## Performance Metrics
 - **Requirements Covered**: 14/14 (v1)
@@ -23,6 +23,8 @@
 - 2026-04-27: Decoupled acquisition (Phase 3) from AI extraction (Phase 4) for better job orchestration.
 - 2026-04-27: Redis installed via Homebrew (v8.6.2) as background service; Docker unavailable on dev machine.
 - 2026-04-27: .env.local is gitignored — REDIS_URL stored locally only (correct security posture for dev).
+- 2026-04-27: article.content (not article.textContent) used as Turndown input in htmlToMarkdown — preserves HTML table structure per D-04.
+- 2026-04-27: turndown-plugin-gfm has no @types package on npm — local .d.ts declaration file is the correct solution.
 
 ### Todos
 - [x] Initialize Phase 1 planning (`/gsd-plan-phase 1`) — 3 plans created 2026-04-27
@@ -34,5 +36,5 @@
 - None
 
 ## Session Continuity
-- **Last Action**: Executed Phase 3 Plan 03-01 — installed all Phase 3 npm deps (bullmq, ioredis, readability, jsdom, turndown), configured Redis via Homebrew, extended schema.ts with manufacturer_pages table + page_type enum, pushed schema to Neon PostgreSQL. All 3 tasks complete, 3 commits made.
-- **Next Step**: Execute Phase 3 Plan 03-02 (infrastructure singletons + HTML→Markdown converter).
+- **Last Action**: Executed Phase 3 Plan 03-02 — created IORedis singleton (src/lib/redis.ts), BullMQ acquisition queue (src/workers/queues.ts), htmlToMarkdown converter (src/acquisition/html-to-markdown.ts), and turndown-plugin-gfm type declaration (src/types/turndown-plugin-gfm.d.ts). All 2 tasks complete, 2 commits made. npx tsc --noEmit exits 0.
+- **Next Step**: Execute Phase 3 Plan 03-03 (site crawler).
