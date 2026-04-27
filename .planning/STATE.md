@@ -7,8 +7,8 @@
 ## Current Position
 
 **Phase**: 3 - Technical Acquisition Pipeline
-**Plan**: TBD
-**Status**: Ready to plan
+**Plan**: 03-01 through 03-04
+**Status**: Ready to execute
 **Progress**: [████░░░░░░░░░░░░░░░░] 33% (2/6 phases complete)
 
 ## Performance Metrics
@@ -25,11 +25,12 @@
 ### Todos
 - [x] Initialize Phase 1 planning (`/gsd-plan-phase 1`) — 3 plans created 2026-04-27
 - [x] Plan Phase 2 (`/gsd-plan-phase 2`) — 2 plans created 2026-04-27
+- [x] Plan Phase 3 (`/gsd-plan-phase 3`) — 4 plans created 2026-04-27
 - [ ] Research specific LLM prompts for chemical unit normalization (Phase 4 requirement)
 
 ### Blockers
 - None
 
 ## Session Continuity
-- **Last Action**: Phase 2 complete — Chemexcil discovery scraper fully implemented and smoke-tested. Key deviation: `drizzle.config.ts` uses `dotenv/config` (loads `.env` not `.env.local`); future `db:push` runs need `DATABASE_URL` injected explicitly. CSRF token expiry (Research Open Question 1) remains untested for full 185-page runs.
-- **Next Step**: Plan Phase 3 (`/gsd-discuss-phase 3` or `/gsd-plan-phase 3`).
+- **Last Action**: Phase 3 planned — 4 plans (03-01 through 03-04) in 4 sequential waves. Key items: install bullmq/ioredis/readability/turndown, add manufacturer_pages schema, Redis setup (Wave 1), infrastructure singletons + HTML→Markdown converter (Wave 2), site crawler + page writer (Wave 3), BullMQ worker + CLI + smoke test (Wave 4). All 10 key constraints verified by plan checker.
+- **Next Step**: Execute Phase 3 (`/gsd-execute-phase 3`).
