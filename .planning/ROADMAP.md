@@ -65,7 +65,27 @@
   1. System can crawl a manufacturer's homepage and follow links to "Products" and "About" pages.
   2. Website content is successfully converted to Markdown, reducing token size compared to raw HTML.
   3. Acquisition jobs are queued and processed asynchronously via BullMQ.
-**Plans**: TBD
+**Plans:** 4 plans in 4 waves
+
+**Wave 1:**
+- [ ] 03-01-PLAN.md — npm deps install, Redis setup, manufacturer_pages schema + [BLOCKING] db:push (EXTR-01)
+
+**Wave 2** *(blocked on Wave 1 completion)*:
+- [ ] 03-02-PLAN.md — IORedis singleton, BullMQ Queue, html-to-markdown converter, TypeScript declaration
+
+**Wave 3** *(blocked on Wave 2 completion)*:
+- [ ] 03-03-PLAN.md — Acquisition types, site-crawler (bounded PlaywrightCrawler), page-writer, job handler
+
+**Wave 4** *(blocked on Wave 3 completion)*:
+- [ ] 03-04-PLAN.md — BullMQ Worker (concurrency: 3), worker entry point, CLI enqueue script, smoke test
+
+**Cross-cutting constraints:**
+- `dotenv` config call MUST be the first import in `src/acquisition/run.ts` and `src/workers/index.ts`
+- `ioredis` connection MUST set `maxRetriesPerRequest: null` — required for BullMQ workers
+- Readability MUST use `article.content` (not `article.textContent`) as Turndown input
+- Each BullMQ job creates its own fresh `PlaywrightCrawler` instance — no shared crawler across concurrent jobs
+- `DATABASE_URL` must be injected explicitly for `drizzle-kit push` (known deviation: drizzle.config.ts loads .env not .env.local)
+- All `src/acquisition/` and `src/workers/` files must use `@/` path aliases (no relative imports)
 
 ### Phase 4: AI Extraction & Technical Profiling
 **Goal**: Generate high-fidelity technical profiles using AI.
@@ -107,8 +127,8 @@
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Lead Foundation & Import | 3/3 | Complete | 2026-04-27 |
-| 2. Automated Discovery | 0/2 | Ready to execute | - |
-| 3. Technical Acquisition Pipeline | 0/0 | Not started | - |
+| 2. Automated Discovery | 2/2 | Complete | 2026-04-27 |
+| 3. Technical Acquisition Pipeline | 0/4 | Ready to execute | - |
 | 4. AI Extraction & Technical Profiling | 0/0 | Not started | - |
 | 5. Search & Discovery Dashboard | 0/0 | Not started | - |
 | 6. Sourcing Workflow & Notes | 0/0 | Not started | - |
