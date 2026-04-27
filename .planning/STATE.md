@@ -7,9 +7,9 @@
 ## Current Position
 
 **Phase**: 3 - Technical Acquisition Pipeline
-**Plan**: 03-01 through 03-04
-**Status**: Ready to execute
-**Progress**: [████░░░░░░░░░░░░░░░░] 33% (2/6 phases complete)
+**Plan**: 03-02 (next)
+**Status**: Executing
+**Progress**: [████░░░░░░░░░░░░░░░░] 33% (2/6 phases complete, 1/4 plans in Phase 3 complete)
 
 ## Performance Metrics
 - **Requirements Covered**: 14/14 (v1)
@@ -21,6 +21,8 @@
 ### Decisions
 - 2026-04-27: Standardized on 6 phases to balance delivery boundaries and project complexity.
 - 2026-04-27: Decoupled acquisition (Phase 3) from AI extraction (Phase 4) for better job orchestration.
+- 2026-04-27: Redis installed via Homebrew (v8.6.2) as background service; Docker unavailable on dev machine.
+- 2026-04-27: .env.local is gitignored — REDIS_URL stored locally only (correct security posture for dev).
 
 ### Todos
 - [x] Initialize Phase 1 planning (`/gsd-plan-phase 1`) — 3 plans created 2026-04-27
@@ -32,5 +34,5 @@
 - None
 
 ## Session Continuity
-- **Last Action**: Phase 3 planned — 4 plans (03-01 through 03-04) in 4 sequential waves. Key items: install bullmq/ioredis/readability/turndown, add manufacturer_pages schema, Redis setup (Wave 1), infrastructure singletons + HTML→Markdown converter (Wave 2), site crawler + page writer (Wave 3), BullMQ worker + CLI + smoke test (Wave 4). All 10 key constraints verified by plan checker.
-- **Next Step**: Execute Phase 3 (`/gsd-execute-phase 3`).
+- **Last Action**: Executed Phase 3 Plan 03-01 — installed all Phase 3 npm deps (bullmq, ioredis, readability, jsdom, turndown), configured Redis via Homebrew, extended schema.ts with manufacturer_pages table + page_type enum, pushed schema to Neon PostgreSQL. All 3 tasks complete, 3 commits made.
+- **Next Step**: Execute Phase 3 Plan 03-02 (infrastructure singletons + HTML→Markdown converter).

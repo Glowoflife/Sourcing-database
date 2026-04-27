@@ -68,7 +68,7 @@
 **Plans:** 4 plans in 4 waves
 
 **Wave 1:**
-- [ ] 03-01-PLAN.md — npm deps install, Redis setup, manufacturer_pages schema + [BLOCKING] db:push (EXTR-01)
+- [x] 03-01-PLAN.md — npm deps install, Redis setup, manufacturer_pages schema + [BLOCKING] db:push (EXTR-01) *(complete 2026-04-27)*
 
 **Wave 2** *(blocked on Wave 1 completion)*:
 - [ ] 03-02-PLAN.md — IORedis singleton, BullMQ Queue, html-to-markdown converter, TypeScript declaration
@@ -128,7 +128,7 @@
 |-------|----------------|--------|-----------|
 | 1. Lead Foundation & Import | 3/3 | Complete | 2026-04-27 |
 | 2. Automated Discovery | 2/2 | Complete | 2026-04-27 |
-| 3. Technical Acquisition Pipeline | 0/4 | Ready to execute | - |
+| 3. Technical Acquisition Pipeline | 1/4 | Executing | - |
 | 4. AI Extraction & Technical Profiling | 0/0 | Not started | - |
 | 5. Search & Discovery Dashboard | 0/0 | Not started | - |
 | 6. Sourcing Workflow & Notes | 0/0 | Not started | - |

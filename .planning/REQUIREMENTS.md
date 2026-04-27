@@ -50,7 +50,7 @@
 | DISC-01 | Phase 2 | Pending |
 | DISC-02 | Phase 1 | Pending |
 | DISC-03 | Phase 1 | Pending |
-| EXTR-01 | Phase 3 | Pending |
+| EXTR-01 | Phase 3 | In Progress (03-01 complete — infrastructure foundation done) |
 | EXTR-02 | Phase 4 | Pending |
 | EXTR-03 | Phase 4 | Pending |
 | EXTR-04 | Phase 4 | Pending |
