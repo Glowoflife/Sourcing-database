@@ -42,6 +42,7 @@ export type NewScraperRun = typeof scraperRuns.$inferInsert;
 export type Lead = typeof leads.$inferSelect;
 export type NewLead = typeof leads.$inferInsert;
 export type LeadStatus = (typeof leadStatusEnum.enumValues)[number];
+export type SourcingStatus = (typeof sourcingStatusEnum.enumValues)[number];
 // LeadStatus = "New" | "Processing" | "Crawled" | "Extracted" | "Errored"
 
 // Phase 3: manufacturer_pages table (D-08)

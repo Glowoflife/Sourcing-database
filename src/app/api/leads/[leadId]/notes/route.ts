@@ -8,10 +8,11 @@ const noteSchema = z.object({
 
 export async function POST(
   request: Request,
-  { params }: { params: { leadId: string } }
+  { params }: { params: Promise<{ leadId: string }> }
 ) {
   try {
-    const leadId = parseInt(params.leadId);
+    const { leadId: rawLeadId } = await params;
+    const leadId = parseInt(rawLeadId);
     if (isNaN(leadId)) {
       return Response.json({ error: "Invalid lead ID" }, { status: 400 });
     }

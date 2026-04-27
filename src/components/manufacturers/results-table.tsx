@@ -13,6 +13,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/leads/status-badge";
+import { SourcingStatusBadge } from "@/components/manufacturers/sourcing-status-badge";
 import {
   Table,
   TableBody,
@@ -175,6 +176,15 @@ export function ResultsTable({ data, page, totalPages, total }: ResultsTableProp
         },
       },
       {
+        accessorKey: "sourcingStatus",
+        header: () => <div className="text-center">Sourcing</div>,
+        cell: ({ row }) => (
+          <div className="flex justify-center">
+            <SourcingStatusBadge status={row.getValue("sourcingStatus")} />
+          </div>
+        ),
+      },
+      {
         accessorKey: "status",
         header: () => <div className="text-center">Status</div>,
         cell: ({ row }) => (
@@ -272,7 +282,10 @@ export function ResultsTable({ data, page, totalPages, total }: ResultsTableProp
                     </Link>
                     <span className="text-xs text-zinc-500 truncate">{lead.url}</span>
                   </div>
-                  <StatusBadge status={lead.status} />
+                  <div className="flex flex-col items-end gap-1">
+                    <StatusBadge status={lead.status} />
+                    <SourcingStatusBadge status={lead.sourcingStatus} className="text-[9px] px-1.5 py-0 h-4" />
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">

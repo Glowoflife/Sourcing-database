@@ -36,6 +36,10 @@ const STATUS_OPTIONS = [
   "New", "Processing", "Crawled", "Extracted", "Errored"
 ];
 
+const SOURCING_STATUS_OPTIONS = [
+  "Unqualified", "Approved", "Rejected", "Flagged"
+];
+
 const CAPACITY_OPTIONS = [
   { label: "Unknown", value: "Unknown" },
   { label: "<100 MT/year", value: "<100" },
@@ -94,6 +98,7 @@ export function SearchToolbar({ children }: { children?: React.ReactNode }) {
     (searchParams.getAll("industry").length) +
     (searchParams.getAll("location").length) +
     (searchParams.getAll("status").length) +
+    (searchParams.getAll("sourcingStatus").length) +
     (searchParams.getAll("capacity").length);
 
   return (
@@ -127,6 +132,12 @@ export function SearchToolbar({ children }: { children?: React.ReactNode }) {
             options={STATUS_OPTIONS.map(o => ({ label: o, value: o }))}
             selectedValues={new Set(searchParams.getAll("status"))}
             onSelect={(value) => toggleFilter("status", value)}
+          />
+          <FacetedFilter
+            title="Sourcing Status"
+            options={SOURCING_STATUS_OPTIONS.map(o => ({ label: o, value: o }))}
+            selectedValues={new Set(searchParams.getAll("sourcingStatus"))}
+            onSelect={(value) => toggleFilter("sourcingStatus", value)}
           />
           <FacetedFilter
             title="Capacity"
@@ -190,6 +201,17 @@ export function SearchToolbar({ children }: { children?: React.ReactNode }) {
               <button
                 className="ml-1 rounded-full outline-hidden ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
                 onClick={() => toggleFilter("status", val)}
+              >
+                <X className="size-3" />
+              </button>
+            </Badge>
+          ))}
+          {searchParams.getAll("sourcingStatus").map((val) => (
+            <Badge key={`sourcingStatus-${val}`} variant="secondary" className="rounded-sm px-1 font-normal">
+              Sourcing: {val}
+              <button
+                className="ml-1 rounded-full outline-hidden ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                onClick={() => toggleFilter("sourcingStatus", val)}
               >
                 <X className="size-3" />
               </button>

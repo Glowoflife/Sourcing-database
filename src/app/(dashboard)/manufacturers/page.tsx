@@ -22,6 +22,11 @@ export default async function ManufacturersPage(props: {
     : typeof searchParams.status === "string"
     ? [searchParams.status]
     : undefined;
+  const sourcingStatus = Array.isArray(searchParams.sourcingStatus)
+    ? searchParams.sourcingStatus
+    : typeof searchParams.sourcingStatus === "string"
+    ? [searchParams.sourcingStatus]
+    : undefined;
   const location = Array.isArray(searchParams.location)
     ? searchParams.location
     : typeof searchParams.location === "string"
@@ -34,7 +39,7 @@ export default async function ManufacturersPage(props: {
     : undefined;
   const page = typeof searchParams.page === "string" ? parseInt(searchParams.page) : 1;
 
-  const queryParams = { q, industry, status, location, capacity, page };
+  const queryParams = { q, industry, status, sourcingStatus, location, capacity, page };
 
   return (
     <div className="mx-auto max-w-[1600px] px-4 py-8 md:px-8">

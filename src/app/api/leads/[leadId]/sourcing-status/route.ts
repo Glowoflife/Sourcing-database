@@ -3,15 +3,16 @@ import { z } from "zod";
 import { logger } from "@/lib/logger";
 
 const statusSchema = z.object({
-  status: z.enum(["Unqualified", "Approved", "Rejected", "Flagged"]),
+  sourcingStatus: z.enum(["Unqualified", "Approved", "Rejected", "Flagged"]),
 });
 
 export async function PUT(
   request: Request,
-  { params }: { params: { leadId: string } }
+  { params }: { params: Promise<{ leadId: string }> }
 ) {
   try {
-    const leadId = parseInt(params.leadId);
+    const { leadId: rawLeadId } = await params;
+    const leadId = parseInt(rawLeadId);
     if (isNaN(leadId)) {
       return Response.json({ error: "Invalid lead ID" }, { status: 400 });
     }
@@ -26,7 +27,7 @@ export async function PUT(
       );
     }
 
-    await updateLeadSourcingStatus(leadId, result.data.status);
+    await updateLeadSourcingStatus(leadId, result.data.sourcingStatus);
 
     return Response.json({ success: true });
   } catch (error) {
