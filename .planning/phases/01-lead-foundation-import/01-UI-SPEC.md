@@ -56,15 +56,15 @@ Exceptions:
 | Role | Size | Weight | Line Height |
 |------|------|--------|-------------|
 | Body | 14px | 400 (regular) | 1.5 |
-| Label | 12px | 500 (medium) | 1.4 |
+| Label | 12px | 400 (regular) | 1.4 |
 | Heading | 20px | 600 (semibold) | 1.2 |
 
 Notes:
 - Body (14px/400/1.5): table cell text, import result counts, form labels
-- Label (12px/500/1.4): status badges, column headers (`TableHead`), helper text below upload input
+- Label (12px/400/1.4): status badges, column headers (`TableHead`), helper text below upload input — differentiated from body by size (12px vs 14px), not weight
 - Heading (20px/600/1.2): page title ("Leads"), section titles ("Import Leads")
 - No display size is used in Phase 1 — this is an internal data tool, not a marketing page
-- Tailwind classes: `text-sm` (14px), `text-xs` (12px), `text-xl` (20px) with matching `font-normal`, `font-medium`, `font-semibold`
+- Tailwind classes: `text-sm` (14px), `text-xs` (12px), `text-xl` (20px) with matching `font-normal`, `font-semibold`
 
 ---
 
