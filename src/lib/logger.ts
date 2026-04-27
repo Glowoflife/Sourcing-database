@@ -16,8 +16,14 @@ function emit(level: LogLevel, ctx: LeadLogContext): void {
     ts: new Date().toISOString(),
     ...ctx,
   };
-  // eslint-disable-next-line no-console
-  console.log(JSON.stringify(entry));
+  const line = JSON.stringify(entry);
+  if (level === "error" || level === "warn") {
+    // eslint-disable-next-line no-console
+    console.error(line);
+  } else {
+    // eslint-disable-next-line no-console
+    console.log(line);
+  }
 }
 
 export const logger = {
