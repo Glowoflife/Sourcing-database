@@ -39,5 +39,5 @@
 - None
 
 ## Session Continuity
-- **Last Action**: Executed Phase 3 Plan 03-04 — created src/workers/acquisition.worker.ts (BullMQ Worker concurrency: 3), src/workers/index.ts (worker process entry with graceful shutdown), src/acquisition/run.ts (CLI enqueue script). Smoke test human-approved: leads enqueued, pages written to manufacturer_pages with human-readable Markdown, lead statuses transitioned, worker graceful shutdown confirmed. All 3 Phase 3 ROADMAP success criteria met. npx tsc --noEmit exits 0. Phase 3 complete.
+- **Last Action**: Phase 3 UAT complete — 7/7 tests passed. Code review fixes applied (9/9 findings resolved including BullMQ connection isolation, Zod validation, upsert idempotency, null URL guard). One post-fix bug found and fixed: dotenv import hoisting caused DATABASE_URL not set on cold start; fixed by switching npm scripts to `node --env-file=.env.local` (Node 20.6+ native). Phase 3 fully verified.
 - **Next Step**: Plan and execute Phase 4 (AI Extraction & Technical Profiling).
