@@ -43,7 +43,19 @@
   1. System successfully identifies and saves member URLs from Chemexcil in a single run.
   2. System handles pagination on the Chemexcil directory without human intervention.
   3. System respects rate limits and completes a discovery run without IP blocks.
-**Plans**: TBD
+**Plans:** 2 plans in 2 waves
+
+**Wave 1:**
+- [ ] 02-01-PLAN.md — Schema migration (url nullable + scraper_runs table), crawlee/playwright install, db:push
+
+**Wave 2** *(blocked on Wave 1 completion)*:
+- [ ] 02-02-PLAN.md — Discovery implementation: types.ts, lead-writer.ts, crawler.ts, run.ts (DISC-01)
+
+**Cross-cutting constraints:**
+- `dotenv` config call MUST be the first executable statement in `src/discovery/run.ts` — before any `@/db` import
+- `leads.url` is nullable from this phase onward — Errored leads may have `url = null`
+- Playwright Chromium binary must be installed via `npx playwright install chromium` before first run
+- All `src/discovery/` files must use `@/` path aliases (no relative imports)
 
 ### Phase 3: Technical Acquisition Pipeline
 **Goal**: Prepare manufacturer website content for AI processing.
@@ -94,8 +106,8 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Lead Foundation & Import | 0/3 | Not started | - |
-| 2. Automated Discovery | 0/0 | Not started | - |
+| 1. Lead Foundation & Import | 3/3 | Complete | 2026-04-27 |
+| 2. Automated Discovery | 0/2 | Ready to execute | - |
 | 3. Technical Acquisition Pipeline | 0/0 | Not started | - |
 | 4. AI Extraction & Technical Profiling | 0/0 | Not started | - |
 | 5. Search & Discovery Dashboard | 0/0 | Not started | - |
