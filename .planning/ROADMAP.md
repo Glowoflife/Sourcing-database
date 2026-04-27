@@ -21,7 +21,19 @@
   1. User can manually import a list of manufacturers via CSV.
   2. User can view the current processing status (New, Processing, Crawled, Errored) for any lead.
   3. Database correctly stores lead names and target URLs.
-**Plans**: TBD
+**Plans:** 3 plans in 2 waves
+
+**Wave 1:**
+- [ ] 01-01-PLAN.md — Project bootstrap, Drizzle schema, and database push (DISC-02) *(autonomous: false — drizzle-kit push requires DB provisioning)*
+
+**Wave 2** *(blocked on Wave 1 completion)*:
+- [ ] 01-02-PLAN.md — CSV import API and leads list API (DISC-03)
+- [ ] 01-03-PLAN.md — Leads dashboard shell, status table, and CSV import UI (DISC-02, DISC-03)
+
+**Cross-cutting constraints:**
+- `DATABASE_URL` must be set in `.env.local` before Wave 1 Task 3 runs
+- All `src/` files must use `@/` path aliases (no relative imports)
+- DB singleton (`src/db/index.ts`) must never be imported in Client Components
 
 ### Phase 2: Automated Discovery
 **Goal**: Automate the seeding of leads from the primary industry source.
@@ -82,7 +94,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Lead Foundation & Import | 0/0 | Not started | - |
+| 1. Lead Foundation & Import | 0/3 | Not started | - |
 | 2. Automated Discovery | 0/0 | Not started | - |
 | 3. Technical Acquisition Pipeline | 0/0 | Not started | - |
 | 4. AI Extraction & Technical Profiling | 0/0 | Not started | - |
