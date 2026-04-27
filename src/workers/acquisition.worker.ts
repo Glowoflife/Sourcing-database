@@ -2,13 +2,17 @@ import { Worker } from "bullmq";
 import type { Job } from "bullmq";
 import { redis } from "@/lib/redis";
 import { runAcquisitionJob } from "@/acquisition/index";
+import { AcquisitionJobSchema } from "@/acquisition/types";
 import { logger } from "@/lib/logger";
 
 export const acquisitionWorker = new Worker(
   "acquisition", // D-06: must match Queue name in src/workers/queues.ts
   async (job: Job) => {
-    const { leadId, url } = job.data as { leadId: number; url: string };
-    await runAcquisitionJob({ leadId, url });
+    const parsed = AcquisitionJobSchema.safeParse(job.data);
+    if (!parsed.success) {
+      throw new Error(`Invalid job data for job ${job.id}: ${parsed.error.message}`);
+    }
+    await runAcquisitionJob(parsed.data);
   },
   {
     connection: redis,
