@@ -1,0 +1,9 @@
+{
+	"id": "Vo8QwDCXXJfBKY1",
+	"json": "{\"id\":\"Vo8QwDCXXJfBKY1\",\"url\":\"http://www.abchemicals.in/\",\"loadedUrl\":\"https://abchemicals.in/\",\"uniqueKey\":\"http://www.abchemicals.in\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"label\":\"HOMEPAGE\",\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-27T13:28:04.592Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "http://www.abchemicals.in",
+	"url": "http://www.abchemicals.in/"
+}

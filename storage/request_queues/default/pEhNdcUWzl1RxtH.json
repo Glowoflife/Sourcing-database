@@ -1,0 +1,9 @@
+{
+	"id": "pEhNdcUWzl1RxtH",
+	"json": "{\"id\":\"pEhNdcUWzl1RxtH\",\"url\":\"https://www.kilpest.com/aboutus.html\",\"loadedUrl\":\"https://www.kilpest.com/aboutus.html\",\"uniqueKey\":\"https://www.kilpest.com/aboutus.html\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"label\":\"PAGE\",\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2026-04-27T13:27:59.982Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.kilpest.com/aboutus.html",
+	"url": "https://www.kilpest.com/aboutus.html"
+}

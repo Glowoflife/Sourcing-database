@@ -1,0 +1,9 @@
+{
+	"id": "Jki821S60uYLqU3",
+	"json": "{\"id\":\"Jki821S60uYLqU3\",\"url\":\"https://www.kilpest.com/products.html\",\"loadedUrl\":\"https://www.kilpest.com/products.html\",\"uniqueKey\":\"https://www.kilpest.com/products.html\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"label\":\"PAGE\",\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2026-04-27T13:28:00.318Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.kilpest.com/products.html",
+	"url": "https://www.kilpest.com/products.html"
+}
