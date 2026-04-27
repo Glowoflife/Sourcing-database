@@ -16,7 +16,13 @@ import { formatLeadDate } from "@/lib/format-date";
 export const dynamic = "force-dynamic"; // always read live DB on each request
 
 export default async function LeadsPage() {
-  const rows = await db.select().from(leads).orderBy(desc(leads.createdAt));
+  let rows: (typeof leads.$inferSelect)[] = [];
+  try {
+    rows = await db.select().from(leads).orderBy(desc(leads.createdAt));
+  } catch (err) {
+    // Log and show empty state — do not rethrow
+    console.error("[leads-page] DB error:", err);
+  }
 
   return (
     <div className="mx-auto max-w-6xl">
