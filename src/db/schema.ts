@@ -33,3 +33,28 @@ export type Lead = typeof leads.$inferSelect;
 export type NewLead = typeof leads.$inferInsert;
 export type LeadStatus = (typeof leadStatusEnum.enumValues)[number];
 // LeadStatus = "New" | "Processing" | "Crawled" | "Errored"
+
+// Phase 3: manufacturer_pages table (D-08)
+// page_type enum — values per Claude's discretion (CONTEXT.md)
+export const pageTypeEnum = pgEnum("page_type", [
+  "homepage",
+  "products",
+  "about",
+  "other",
+]);
+
+export const manufacturerPages = pgTable("manufacturer_pages", {
+  id: serial("id").primaryKey(),
+  leadId: integer("lead_id")
+    .notNull()
+    .references(() => leads.id),
+  url: text("url").notNull(),
+  pageType: pageTypeEnum("page_type").notNull(),
+  markdownContent: text("markdown_content").notNull(),
+  crawledAt: timestamp("crawled_at").notNull().defaultNow(),
+});
+
+export type ManufacturerPage = typeof manufacturerPages.$inferSelect;
+export type NewManufacturerPage = typeof manufacturerPages.$inferInsert;
+export type PageType = (typeof pageTypeEnum.enumValues)[number];
+// PageType = "homepage" | "products" | "about" | "other"
