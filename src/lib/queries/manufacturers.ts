@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { leads, locations, manufacturerProfiles, products } from "@/db/schema";
-import { and, eq, ilike, inArray, isNull, lt, gte, or, sql, desc, countDistinct, arrayOverlaps } from "drizzle-orm";
+import { and, eq, ilike, inArray, isNull, lt, gte, or, sql, desc, asc, countDistinct, arrayOverlaps } from "drizzle-orm";
 
 /**
  * Fetch manufacturers with search, filtering and pagination.
@@ -91,6 +91,16 @@ export async function getManufacturers({
     }
   }
 
+  // Custom status priority: Extracted (1), Crawled (2), Processing (3), New (4), Errored (5)
+  const statusPriority = sql`CASE 
+    WHEN ${leads.status} = 'Extracted' THEN 1
+    WHEN ${leads.status} = 'Crawled' THEN 2
+    WHEN ${leads.status} = 'Processing' THEN 3
+    WHEN ${leads.status} = 'New' THEN 4
+    WHEN ${leads.status} = 'Errored' THEN 5
+    ELSE 6
+  END`;
+
   // Subquery to get the lead IDs that match the criteria
   const leadIdsQuery = db
     .select({
@@ -102,7 +112,7 @@ export async function getManufacturers({
     .leftJoin(locations, eq(manufacturerProfiles.id, locations.profileId))
     .where(and(...whereConditions))
     .groupBy(leads.id)
-    .orderBy(desc(leads.createdAt))
+    .orderBy(statusPriority, asc(leads.name))
     .limit(limit)
     .offset(offset);
 
@@ -129,7 +139,7 @@ export async function getManufacturers({
           },
         },
       },
-      orderBy: [desc(leads.createdAt)],
+      orderBy: [statusPriority, asc(leads.name)],
     });
   }
 
