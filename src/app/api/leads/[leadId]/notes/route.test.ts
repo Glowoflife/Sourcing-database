@@ -13,7 +13,7 @@ describe('POST /api/leads/[leadId]/notes', () => {
       body: JSON.stringify({ content: 'Test Note' }),
     });
     
-    const res = await POST(req, { params: { leadId: '1' } });
+    const res = await POST(req, { params: Promise.resolve({ leadId: '1' }) });
     expect(res.status).toBe(201);
     expect(queries.createLeadNote).toHaveBeenCalledWith(1, 'Test Note');
     
@@ -27,7 +27,7 @@ describe('POST /api/leads/[leadId]/notes', () => {
       body: JSON.stringify({ content: '' }),
     });
     
-    const res = await POST(req, { params: { leadId: '1' } });
+    const res = await POST(req, { params: Promise.resolve({ leadId: '1' }) });
     expect(res.status).toBe(400);
   });
 });

@@ -3,17 +3,17 @@ import { PUT } from './route';
 import * as queries from '@/lib/queries/manufacturers';
 
 vi.mock('@/lib/queries/manufacturers', () => ({
-  updateLeadSourcingStatus: vi.fn(),
+  updateLeadSourcingStatus: vi.fn().mockResolvedValue([{ id: 1, sourcingStatus: 'Approved' }]),
 }));
 
 describe('PUT /api/leads/[leadId]/sourcing-status', () => {
   test('returns 200 on success', async () => {
     const req = new Request('http://localhost', {
       method: 'PUT',
-      body: JSON.stringify({ status: 'Approved' }),
+      body: JSON.stringify({ sourcingStatus: 'Approved' }),
     });
-    
-    const res = await PUT(req, { params: { leadId: '1' } });
+
+    const res = await PUT(req, { params: Promise.resolve({ leadId: '1' }) });
     expect(res.status).toBe(200);
     expect(queries.updateLeadSourcingStatus).toHaveBeenCalledWith(1, 'Approved');
   });
@@ -21,20 +21,20 @@ describe('PUT /api/leads/[leadId]/sourcing-status', () => {
   test('returns 400 on invalid status', async () => {
     const req = new Request('http://localhost', {
       method: 'PUT',
-      body: JSON.stringify({ status: 'Invalid' }),
+      body: JSON.stringify({ sourcingStatus: 'Invalid' }),
     });
-    
-    const res = await PUT(req, { params: { leadId: '1' } });
+
+    const res = await PUT(req, { params: Promise.resolve({ leadId: '1' }) });
     expect(res.status).toBe(400);
   });
 
   test('returns 400 on invalid leadId', async () => {
     const req = new Request('http://localhost', {
       method: 'PUT',
-      body: JSON.stringify({ status: 'Approved' }),
+      body: JSON.stringify({ sourcingStatus: 'Approved' }),
     });
-    
-    const res = await PUT(req, { params: { leadId: 'abc' } });
+
+    const res = await PUT(req, { params: Promise.resolve({ leadId: 'abc' }) });
     expect(res.status).toBe(400);
   });
 });

@@ -21,21 +21,14 @@ import {
 import { cn } from "@/lib/utils";
 import { NotesSection } from "./notes-section";
 import type {
-  ManufacturerProfile,
-  Product,
-  Contact,
-  Location,
   ManufacturerPage,
   LeadNote,
 } from "@/db/schema";
+import type { ManufacturerDetailProfile } from "@/lib/queries/manufacturers";
 
 interface DetailSectionsProps {
   leadId: number;
-  profile: ManufacturerProfile & {
-    products: Product[];
-    contacts: Contact[];
-    locations: Location[];
-  };
+  profile: ManufacturerDetailProfile;
   pages: ManufacturerPage[];
   notes: LeadNote[];
   leadUrl: string;

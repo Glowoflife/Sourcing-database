@@ -52,7 +52,7 @@ export default async function ManufacturerDetailPage({
         ) : (
           <DetailSections
             leadId={leadId}
-            profile={profile as any}
+            profile={profile}
             pages={manufacturer.manufacturerPages || []}
             notes={manufacturer.notes || []}
             leadUrl={manufacturer.url}

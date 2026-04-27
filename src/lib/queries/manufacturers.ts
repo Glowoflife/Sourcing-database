@@ -1,8 +1,40 @@
 import { db } from "@/db";
-import { leads, locations, manufacturerProfiles, products, leadNotes } from "@/db/schema";
+import {
+  leads,
+  locations,
+  manufacturerProfiles,
+  products,
+  leadNotes,
+  leadStatusEnum,
+  sourcingStatusEnum,
+} from "@/db/schema";
 import type { LeadStatus, SourcingStatus } from "@/db/schema";
 import { and, eq, ilike, inArray, isNull, lt, gte, or, sql, desc, asc, countDistinct, arrayOverlaps } from "drizzle-orm";
 import { cache } from "react";
+
+const LEAD_STATUS_VALUES = new Set<string>(leadStatusEnum.enumValues);
+const SOURCING_STATUS_VALUES = new Set<string>(sourcingStatusEnum.enumValues);
+
+function filterLeadStatuses(values: string[]): LeadStatus[] {
+  return values.filter((v): v is LeadStatus => LEAD_STATUS_VALUES.has(v));
+}
+
+function filterSourcingStatuses(values: string[]): SourcingStatus[] {
+  return values.filter((v): v is SourcingStatus => SOURCING_STATUS_VALUES.has(v));
+}
+
+export type ManufacturerListItem = Awaited<
+  ReturnType<typeof db.query.leads.findMany<{
+    with: {
+      manufacturerProfiles: {
+        with: {
+          products: true;
+          locations: true;
+        };
+      };
+    };
+  }>>
+>[number];
 
 /**
  * Fetch manufacturers with search, filtering and pagination.
@@ -58,11 +90,17 @@ export const getManufacturers = cache(async function getManufacturers({
   }
 
   if (status && status.length > 0) {
-    whereConditions.push(inArray(leads.status, status as LeadStatus[]));
+    const validStatus = filterLeadStatuses(status);
+    if (validStatus.length > 0) {
+      whereConditions.push(inArray(leads.status, validStatus));
+    }
   }
 
   if (sourcingStatus && sourcingStatus.length > 0) {
-    whereConditions.push(inArray(leads.sourcingStatus, sourcingStatus as SourcingStatus[]));
+    const validSourcing = filterSourcingStatuses(sourcingStatus);
+    if (validSourcing.length > 0) {
+      whereConditions.push(inArray(leads.sourcingStatus, validSourcing));
+    }
   }
 
   if (location && location.length > 0) {
@@ -135,7 +173,7 @@ export const getManufacturers = cache(async function getManufacturers({
   const total = Number(totalCountResult[0]?.count || 0);
   const leadIds = (await leadIdsQuery).map((r) => r.id);
 
-  let data: any[] = [];
+  let data: ManufacturerListItem[] = [];
   if (leadIds.length > 0) {
     data = await db.query.leads.findMany({
       where: inArray(leads.id, leadIds),
@@ -160,10 +198,30 @@ export const getManufacturers = cache(async function getManufacturers({
   };
 });
 
+export type ManufacturerDetail = NonNullable<
+  Awaited<
+    ReturnType<typeof db.query.leads.findFirst<{
+      with: {
+        manufacturerProfiles: {
+          with: {
+            products: true;
+            contacts: true;
+            locations: true;
+          };
+        };
+        manufacturerPages: true;
+        notes: true;
+      };
+    }>>
+  >
+>;
+
+export type ManufacturerDetailProfile = NonNullable<ManufacturerDetail["manufacturerProfiles"]>;
+
 /**
  * Fetch full details for a single manufacturer by leadId.
  */
-export async function getManufacturerDetail(leadId: number) {
+export async function getManufacturerDetail(leadId: number): Promise<ManufacturerDetail | undefined> {
   const leadData = await db.query.leads.findFirst({
     where: eq(leads.id, leadId),
     with: {

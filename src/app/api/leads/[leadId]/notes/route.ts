@@ -32,11 +32,10 @@ export async function POST(
 
     return Response.json(newNote, { status: 201 });
   } catch (error) {
-    logger.error({ 
-      stage: "api-create-note", 
-      status: "fail", 
-      leadId: rawLeadId,
-      message: String(error) 
+    logger.error({
+      stage: "api-create-note",
+      status: "fail",
+      message: `leadId=${rawLeadId ?? "?"} ${String(error)}`,
     });
     return Response.json(
       { error: "Internal server error" },

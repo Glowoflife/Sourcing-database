@@ -32,11 +32,10 @@ export async function PUT(
 
     return Response.json({ success: true });
   } catch (error) {
-    logger.error({ 
-      stage: "api-update-sourcing-status", 
-      status: "fail", 
-      leadId: rawLeadId,
-      message: String(error) 
+    logger.error({
+      stage: "api-update-sourcing-status",
+      status: "fail",
+      message: `leadId=${rawLeadId ?? "?"} ${String(error)}`,
     });
     return Response.json(
       { error: "Internal server error" },
