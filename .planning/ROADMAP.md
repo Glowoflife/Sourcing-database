@@ -27,8 +27,8 @@
 - [x] 01-01-PLAN.md — Project bootstrap, Drizzle schema, and database push (DISC-02) *(complete 2026-04-27)*
 
 **Wave 2** *(blocked on Wave 1 completion)*:
-- [ ] 01-02-PLAN.md — CSV import API and leads list API (DISC-03)
-- [ ] 01-03-PLAN.md — Leads dashboard shell, status table, and CSV import UI (DISC-02, DISC-03)
+- [x] 01-02-PLAN.md — CSV import API and leads list API (DISC-03) *(complete 2026-04-27)*
+- [x] 01-03-PLAN.md — Leads dashboard shell, status table, and CSV import UI (DISC-02, DISC-03) *(complete 2026-04-27)*
 
 **Cross-cutting constraints:**
 - `DATABASE_URL` must be set in `.env.local` before Wave 1 Task 3 runs
