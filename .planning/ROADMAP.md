@@ -24,7 +24,7 @@
 **Plans:** 3 plans in 2 waves
 
 **Wave 1:**
-- [ ] 01-01-PLAN.md — Project bootstrap, Drizzle schema, and database push (DISC-02) *(autonomous: false — drizzle-kit push requires DB provisioning)*
+- [x] 01-01-PLAN.md — Project bootstrap, Drizzle schema, and database push (DISC-02) *(complete 2026-04-27)*
 
 **Wave 2** *(blocked on Wave 1 completion)*:
 - [ ] 01-02-PLAN.md — CSV import API and leads list API (DISC-03)
