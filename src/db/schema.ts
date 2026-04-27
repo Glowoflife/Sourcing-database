@@ -13,7 +13,7 @@ export const leads = pgTable("leads", {
   url: text("url").notNull().unique(),
   status: leadStatusEnum("status").notNull().default("New"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow().$onUpdateFn(() => new Date()),
 });
 
 export type Lead = typeof leads.$inferSelect;
