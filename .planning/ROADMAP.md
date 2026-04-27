@@ -30,6 +30,22 @@
 - [x] 05-02-PLAN.md — Manufacturers List Page (/manufacturers) with search/filters (CRM-01) *(complete 2026-04-27)*
 - [x] 05-03-PLAN.md — Manufacturer Detail Page (/manufacturers/[leadId]) (CRM-02) *(complete 2026-04-27)*
 
+### Phase 6: Sourcing Workflow & Notes
+**Goal**: Implement decision support tools including sourcing status and manufacturer notes.
+**Depends on**: Phase 5
+**Requirements**: CRM-03, CRM-04
+**Success Criteria**:
+  1. User can update sourcing status (Approved, Rejected, Flagged) for any lead.
+  2. Dashboard supports filtering by sourcing status.
+  3. User can add and view chronological notes on manufacturer profiles.
+**Plans:** 2 plans in 2 waves
+
+**Wave 1:**
+- [ ] 06-01-PLAN.md — Workflow Infrastructure (Schema, API, and Data Layer) (CRM-03, CRM-04)
+
+**Wave 2:**
+- [ ] 06-02-PLAN.md — Workflow UI Integration (Dashboard filters and Detail Page interactions) (CRM-03, CRM-04)
+
 ---
 
 ## Progress Table
@@ -41,4 +57,4 @@
 | 3. Technical Acquisition Pipeline | 4/4 | Complete | 2026-04-27 |
 | 4. AI Extraction & Technical Profiling | 4/4 | Complete | 2026-04-27 |
 | 5. Search & Discovery Dashboard | 3/3 | Complete | 2026-04-27 |
-| 6. Sourcing Workflow & Notes | 0/0 | Not started | - |
+| 6. Sourcing Workflow & Notes | 0/2 | In progress | - |
