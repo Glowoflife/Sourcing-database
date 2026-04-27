@@ -96,7 +96,28 @@
   2. Contact information (Email/Phone) is extracted and validated for format.
   3. Production capacities are normalized to MT/year for comparison.
   4. "Industries Served" are mapped to a standardized set of industry tags.
-**Plans**: TBD
+**Plans:** 4 plans in 4 waves
+
+**Wave 1:**
+- [ ] 04-01-PLAN.md — npm deps install (instructor-js, openai, anthropic, llm-polyglot), schema extension (Extracted status + 4 profile tables), [BLOCKING] db:push
+
+**Wave 2** *(blocked on Wave 1 completion)*:
+- [ ] 04-02-PLAN.md — Zod extraction schemas (src/schemas/extraction.ts), instructor client factory, build-prompt utility
+
+**Wave 3** *(blocked on Wave 2 completion)*:
+- [ ] 04-03-PLAN.md — extractProfile (LLM call layer), runExtractionJob (DB read/write transaction, status transition)
+
+**Wave 4** *(blocked on Wave 3 completion)*:
+- [ ] 04-04-PLAN.md — BullMQ extraction worker (concurrency: 5), queues extension, workers/index.ts update, CLI run.ts, npm run extract script
+
+**Cross-cutting constraints:**
+- `dotenv` config call MUST be the first import in `src/extraction/run.ts` — before any `@/db` or `@/workers` import
+- `node --env-file=.env.local` MUST be used in the npm script (not `dotenv/config` import in entry points) — Phase 3 lesson
+- `ioredis` extraction connections MUST call `createRedisConnection()` — never share Redis connections between Queue and Worker
+- `DATABASE_URL` must be injected explicitly for `drizzle-kit push` (same as Phase 3)
+- All `src/extraction/` and `src/schemas/` files must use `@/` path aliases (no relative imports)
+- `onConflictDoUpdate` on `manufacturer_profiles.lead_id` for idempotent re-extraction
+- ZodError[] (instructor exhausted retries) must be caught and re-thrown as a plain Error
 
 ### Phase 5: Search & Discovery Dashboard
 **Goal**: Enable users to find manufacturers through a performant interface.
@@ -129,6 +150,6 @@
 | 1. Lead Foundation & Import | 3/3 | Complete | 2026-04-27 |
 | 2. Automated Discovery | 2/2 | Complete | 2026-04-27 |
 | 3. Technical Acquisition Pipeline | 4/4 | Complete | 2026-04-27 |
-| 4. AI Extraction & Technical Profiling | 0/0 | Not started | - |
+| 4. AI Extraction & Technical Profiling | 0/4 | Planned | - |
 | 5. Search & Discovery Dashboard | 0/0 | Not started | - |
 | 6. Sourcing Workflow & Notes | 0/0 | Not started | - |
