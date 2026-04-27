@@ -7,8 +7,8 @@
 
 ### Discovery (DISC)
 - [ ] **DISC-01**: Automated scraper for Chemexcil membership list to seed the lead database.
-- [ ] **DISC-02**: Lead lifecycle tracking (New, Processing, Crawled, Errored).
-- [ ] **DISC-03**: Support for importing leads from external CSV/JSON sources or other directories.
+- [x] **DISC-02**: Lead lifecycle tracking (New, Processing, Crawled, Errored). *(Validated Phase 1)*
+- [x] **DISC-03**: Support for importing leads from external CSV/JSON sources or other directories. *(Validated Phase 1)*
 
 ### Deep Extraction (EXTR)
 - [ ] **EXTR-01**: Pipeline to convert manufacturer website HTML to Markdown for token-efficient AI processing.

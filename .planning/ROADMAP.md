@@ -2,7 +2,7 @@
 
 ## Phases
 
-- [ ] **Phase 1: Lead Foundation & Import** - Core schema and manual lead management.
+- [x] **Phase 1: Lead Foundation & Import** - Core schema and manual lead management. *(Complete 2026-04-27)*
 - [ ] **Phase 2: Automated Discovery** - Chemexcil scraper for lead generation.
 - [ ] **Phase 3: Acquisition Pipeline** - HTML to Markdown conversion and job orchestration.
 - [ ] **Phase 4: AI Extraction & Technical Profiling** - Deep technical data extraction from websites.
