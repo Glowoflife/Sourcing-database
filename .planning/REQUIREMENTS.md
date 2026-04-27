@@ -47,20 +47,20 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DISC-01 | Phase 1 | Pending |
+| DISC-01 | Phase 2 | Pending |
 | DISC-02 | Phase 1 | Pending |
 | DISC-03 | Phase 1 | Pending |
-| EXTR-01 | Phase 2 | Pending |
-| EXTR-02 | Phase 2 | Pending |
-| EXTR-03 | Phase 2 | Pending |
-| EXTR-04 | Phase 2 | Pending |
-| EXTR-05 | Phase 2 | Pending |
-| EXTR-06 | Phase 2 | Pending |
-| CRM-01 | Phase 3 | Pending |
-| CRM-02 | Phase 3 | Pending |
-| CRM-03 | Phase 3 | Pending |
-| CRM-04 | Phase 3 | Pending |
-| TECH-01 | Phase 2 | Pending |
+| EXTR-01 | Phase 3 | Pending |
+| EXTR-02 | Phase 4 | Pending |
+| EXTR-03 | Phase 4 | Pending |
+| EXTR-04 | Phase 4 | Pending |
+| EXTR-05 | Phase 4 | Pending |
+| EXTR-06 | Phase 4 | Pending |
+| CRM-01 | Phase 5 | Pending |
+| CRM-02 | Phase 5 | Pending |
+| CRM-03 | Phase 6 | Pending |
+| CRM-04 | Phase 6 | Pending |
+| TECH-01 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 14 total
@@ -69,4 +69,4 @@
 
 ---
 *Requirements defined: April 27, 2026*
-*Last updated: April 27, 2026 after initial definition*
+*Last updated: April 27, 2026 after roadmap creation*

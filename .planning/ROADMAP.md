@@ -1,0 +1,90 @@
+# Roadmap: Indian Chemical Sourcing Database
+
+## Phases
+
+- [ ] **Phase 1: Lead Foundation & Import** - Core schema and manual lead management.
+- [ ] **Phase 2: Automated Discovery** - Chemexcil scraper for lead generation.
+- [ ] **Phase 3: Acquisition Pipeline** - HTML to Markdown conversion and job orchestration.
+- [ ] **Phase 4: AI Extraction & Technical Profiling** - Deep technical data extraction from websites.
+- [ ] **Phase 5: Search & Discovery Dashboard** - High-density browsing and detail views.
+- [ ] **Phase 6: Sourcing Workflow & Notes** - Decision support and team collaboration.
+
+---
+
+## Phase Details
+
+### Phase 1: Lead Foundation & Import
+**Goal**: Establish the lead management system and initial data pool.
+**Depends on**: Nothing
+**Requirements**: DISC-02, DISC-03
+**Success Criteria**:
+  1. User can manually import a list of manufacturers via CSV.
+  2. User can view the current processing status (New, Processing, Crawled, Errored) for any lead.
+  3. Database correctly stores lead names and target URLs.
+**Plans**: TBD
+
+### Phase 2: Automated Discovery
+**Goal**: Automate the seeding of leads from the primary industry source.
+**Depends on**: Phase 1
+**Requirements**: DISC-01
+**Success Criteria**:
+  1. System successfully identifies and saves member URLs from Chemexcil in a single run.
+  2. System handles pagination on the Chemexcil directory without human intervention.
+  3. System respects rate limits and completes a discovery run without IP blocks.
+**Plans**: TBD
+
+### Phase 3: Technical Acquisition Pipeline
+**Goal**: Prepare manufacturer website content for AI processing.
+**Depends on**: Phase 2
+**Requirements**: EXTR-01
+**Success Criteria**:
+  1. System can crawl a manufacturer's homepage and follow links to "Products" and "About" pages.
+  2. Website content is successfully converted to Markdown, reducing token size compared to raw HTML.
+  3. Acquisition jobs are queued and processed asynchronously via BullMQ.
+**Plans**: TBD
+
+### Phase 4: AI Extraction & Technical Profiling
+**Goal**: Generate high-fidelity technical profiles using AI.
+**Depends on**: Phase 3
+**Requirements**: EXTR-02, EXTR-03, EXTR-04, EXTR-05, EXTR-06, TECH-01
+**Success Criteria**:
+  1. Manufacturer profiles show structured lists of products and CAS numbers.
+  2. Contact information (Email/Phone) is extracted and validated for format.
+  3. Production capacities are normalized to MT/year for comparison.
+  4. "Industries Served" are mapped to a standardized set of industry tags.
+**Plans**: TBD
+
+### Phase 5: Search & Discovery Dashboard
+**Goal**: Enable users to find manufacturers through a performant interface.
+**Depends on**: Phase 4
+**Requirements**: CRM-01, CRM-02
+**Success Criteria**:
+  1. User can search for manufacturers by chemical name or CAS number.
+  2. User can filter manufacturers by industry and production capacity.
+  3. Detail view displays all technical data, locations, and contact info on a single screen.
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 6: Sourcing Workflow & Notes
+**Goal**: Facilitate procurement decision-making and team collaboration.
+**Depends on**: Phase 5
+**Requirements**: CRM-03, CRM-04
+**Success Criteria**:
+  1. User can change a manufacturer's status to "Approved" or "Rejected" with one click.
+  2. Team members can add and view time-stamped notes on manufacturer profiles.
+  3. The dashboard clearly highlights manufacturers flagged for manual review.
+**Plans**: TBD
+**UI hint**: yes
+
+---
+
+## Progress Table
+
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 1. Lead Foundation & Import | 0/0 | Not started | - |
+| 2. Automated Discovery | 0/0 | Not started | - |
+| 3. Technical Acquisition Pipeline | 0/0 | Not started | - |
+| 4. AI Extraction & Technical Profiling | 0/0 | Not started | - |
+| 5. Search & Discovery Dashboard | 0/0 | Not started | - |
+| 6. Sourcing Workflow & Notes | 0/0 | Not started | - |
