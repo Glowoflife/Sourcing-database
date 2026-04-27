@@ -50,7 +50,18 @@ export async function runAcquisitionJob({
     });
   } catch (err) {
     // Step 6: Mark lead as Errored on permanent failure (D-02)
-    await updateLeadStatus(leadId, "Errored");
+    // Wrap in its own try/catch — if the DB is unavailable, we still re-throw the
+    // original error so BullMQ records the correct failure reason.
+    try {
+      await updateLeadStatus(leadId, "Errored");
+    } catch (statusErr) {
+      logger.error({
+        stage: "acquire",
+        status: "fail",
+        leadId,
+        message: `Failed to mark lead as Errored: ${String(statusErr)}`,
+      });
+    }
 
     logger.error({
       stage: "acquire",
