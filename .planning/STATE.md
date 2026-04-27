@@ -7,8 +7,8 @@
 ## Current Position
 
 **Phase**: 2 - Automated Discovery
-**Plan**: Not yet planned
-**Status**: Ready to plan
+**Plan**: 2 plans in 2 waves
+**Status**: Ready to execute
 **Progress**: [░░░░░░░░░░░░░░░░░░░░] 0%
 
 ## Performance Metrics
@@ -24,11 +24,12 @@
 
 ### Todos
 - [x] Initialize Phase 1 planning (`/gsd-plan-phase 1`) — 3 plans created 2026-04-27
+- [x] Plan Phase 2 (`/gsd-plan-phase 2`) — 2 plans created 2026-04-27
 - [ ] Research specific LLM prompts for chemical unit normalization (Phase 4 requirement)
 
 ### Blockers
 - None
 
 ## Session Continuity
-- **Last Action**: Created ROADMAP.md and initialized STATE.md.
-- **Next Step**: Start planning for Phase 1.
+- **Last Action**: Planned Phase 2 — 2 plans (02-01: schema migration + deps, 02-02: discovery implementation). PlaywrightCrawler required (Chemexcil JS-driven pagination). `leads.url` made nullable to support Errored records for URL-less members.
+- **Next Step**: Execute Phase 2 (`/gsd-execute-phase 2`).
