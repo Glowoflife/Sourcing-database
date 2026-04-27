@@ -1,5 +1,6 @@
 import { db } from "@/db";
 import { leads, locations, manufacturerProfiles, products, leadNotes } from "@/db/schema";
+import type { LeadStatus, SourcingStatus } from "@/db/schema";
 import { and, eq, ilike, inArray, isNull, lt, gte, or, sql, desc, asc, countDistinct, arrayOverlaps } from "drizzle-orm";
 import { cache } from "react";
 
@@ -57,11 +58,11 @@ export const getManufacturers = cache(async function getManufacturers({
   }
 
   if (status && status.length > 0) {
-    whereConditions.push(inArray(leads.status, status as any));
+    whereConditions.push(inArray(leads.status, status as LeadStatus[]));
   }
 
   if (sourcingStatus && sourcingStatus.length > 0) {
-    whereConditions.push(inArray(leads.sourcingStatus, sourcingStatus as any));
+    whereConditions.push(inArray(leads.sourcingStatus, sourcingStatus as SourcingStatus[]));
   }
 
   if (location && location.length > 0) {
@@ -186,10 +187,10 @@ export async function getManufacturerDetail(leadId: number) {
 /**
  * Update the sourcing status of a lead.
  */
-export async function updateLeadSourcingStatus(leadId: number, status: string) {
+export async function updateLeadSourcingStatus(leadId: number, status: SourcingStatus) {
   return await db
     .update(leads)
-    .set({ sourcingStatus: status as any })
+    .set({ sourcingStatus: status })
     .where(eq(leads.id, leadId))
     .returning();
 }

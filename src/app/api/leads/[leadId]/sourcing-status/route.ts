@@ -10,8 +10,9 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ leadId: string }> }
 ) {
+  let rawLeadId: string | undefined;
   try {
-    const { leadId: rawLeadId } = await params;
+    rawLeadId = (await params).leadId;
     const leadId = parseInt(rawLeadId);
     if (isNaN(leadId)) {
       return Response.json({ error: "Invalid lead ID" }, { status: 400 });
@@ -34,7 +35,7 @@ export async function PUT(
     logger.error({ 
       stage: "api-update-sourcing-status", 
       status: "fail", 
-      leadId: params.leadId,
+      leadId: rawLeadId,
       message: String(error) 
     });
     return Response.json(

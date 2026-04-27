@@ -20,7 +20,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 interface DetailHeaderProps {
   leadId: number;
@@ -129,15 +129,11 @@ export function DetailHeader({
               Sourcing Status:
             </span>
             <Popover open={open} onOpenChange={setOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="h-8 gap-2 px-3 border-zinc-200 hover:bg-zinc-50 transition-colors"
-                >
-                  <SourcingStatusBadge status={sourcingStatus} className="border-0 bg-transparent p-0" />
-                  <ChevronDown className="h-4 w-4 text-zinc-400" />
-                </Button>
+              <PopoverTrigger
+                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "h-8 gap-2 px-3 border-zinc-200 hover:bg-zinc-50 transition-colors")}
+              >
+                <SourcingStatusBadge status={sourcingStatus} className="border-0 bg-transparent p-0" />
+                <ChevronDown className="h-4 w-4 text-zinc-400" />
               </PopoverTrigger>
               <PopoverContent className="w-[180px] p-0" align="start">
                 <Command>

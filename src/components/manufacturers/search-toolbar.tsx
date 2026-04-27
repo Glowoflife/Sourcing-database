@@ -5,7 +5,7 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Search, X, Filter, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -244,8 +244,7 @@ interface FacetedFilterProps {
 function FacetedFilter({ title, options, selectedValues, onSelect }: FacetedFilterProps) {
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8 border-dashed">
+      <PopoverTrigger className={cn(buttonVariants({ variant: "outline", size: "sm" }), "h-8 border-dashed")}>
           <Filter className="mr-2 size-4" />
           {title}
           {selectedValues.size > 0 && (
@@ -281,7 +280,6 @@ function FacetedFilter({ title, options, selectedValues, onSelect }: FacetedFilt
               </div>
             </>
           )}
-        </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
         <Command>

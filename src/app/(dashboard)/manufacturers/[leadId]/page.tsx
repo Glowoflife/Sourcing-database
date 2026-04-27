@@ -25,7 +25,7 @@ export default async function ManufacturerDetailPage({
     notFound();
   }
 
-  const profile = manufacturer.manufacturerProfiles?.[0];
+  const profile = manufacturer.manufacturerProfiles;
 
   return (
     <div className="max-w-[1600px] mx-auto px-4 md:px-8 py-8">
