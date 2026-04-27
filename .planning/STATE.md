@@ -2,19 +2,19 @@
 
 ## Project Reference
 **Core Value**: Automated discovery and deep technical profiling of the Indian chemical supply chain for data-driven procurement.
-**Current Focus**: Phase 5 search and discovery experience.
+**Current Focus**: Project complete (v1).
 
 ## Current Position
 
-**Phase**: 5 - Search & Discovery Dashboard
+**Phase**: 6 - Sourcing Workflow & Notes
 **Plan**: 02 - Execution complete
-**Status**: In Progress
-**Progress**: [██████████░░░░░░░░░░] 75% (4/6 phases complete, Phase 5 in progress)
+**Status**: Complete
+**Progress**: [████████████████████] 100% (6/6 phases complete)
 
 ## Performance Metrics
 - **Requirements Covered**: 15/15 (v1)
 - **Phases Defined**: 6
-- **Completed Phases**: 4
+- **Completed Phases**: 6
 
 ## Accumulated Context
 
@@ -33,6 +33,8 @@
 - 2026-04-27: The Anthropic extraction path now uses native Anthropic tool calls plus local Zod validation/retry because `@instructor-ai/instructor` crashed on the full production extraction schema during live verification.
 - 2026-04-27: Live Phase 4 verification used 3 real Chemexcil-seeded leads, produced 5 crawled pages, and persisted 3 manufacturer profiles with downstream child rows.
 - 2026-04-27: Phase 5 search uses debounced URL state sync with Server Component data fetching for the manufacturers list.
+- 2026-04-27: Phase 6 sourcing workflow implemented with a dedicated `sourcing_status` enum and `lead_notes` table to support CRM-03 and CRM-04.
+- 2026-04-27: Notes system supports chronological tracking of internal team feedback and relationship history.
 
 ### Todos
 - [x] Initialize Phase 1 planning (`/gsd-plan-phase 1`)
@@ -40,10 +42,11 @@
 - [x] Plan Phase 3 (`/gsd-plan-phase 3`)
 - [x] Plan Phase 4 (`/gsd-plan-phase 4`)
 - [x] Plan Phase 5 (`/gsd-plan-phase 5`)
+- [x] Plan Phase 6 (`/gsd-plan-phase 6`)
 
 ### Blockers
 - None.
 
 ## Session Continuity
-- **Last Action**: Completed Phase 05 Plan 02: Implemented Manufacturers List Page with advanced search and filters.
-- **Next Step**: Execute Phase 05 Plan 03: Implement Manufacturer Detail Page.
+- **Last Action**: Completed Phase 06: Sourcing Workflow & Notes.
+- **Next Step**: v1 Maintenance / v2 Planning.

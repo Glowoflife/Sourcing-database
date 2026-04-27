@@ -1,0 +1,40 @@
+{
+  "_meta": {
+    "updated_at": "2026-04-27T12:00:00Z",
+    "version": 1
+  },
+  "entries": {
+    "POST /api/leads/import": {
+      "method": "POST",
+      "path": "/api/leads/import",
+      "params": [],
+      "file": "src/app/api/leads/import/route.ts",
+      "description": "Import leads from CSV data"
+    },
+    "PATCH /api/leads/[leadId]/sourcing-status": {
+      "method": "PATCH",
+      "path": "/api/leads/[leadId]/sourcing-status",
+      "params": [
+        "status"
+      ],
+      "file": "src/app/api/leads/[leadId]/sourcing-status/route.ts",
+      "description": "Update sourcing status of a lead"
+    },
+    "GET /api/leads/[leadId]/notes": {
+      "method": "GET",
+      "path": "/api/leads/[leadId]/notes",
+      "params": [],
+      "file": "src/app/api/leads/[leadId]/notes/route.ts",
+      "description": "Get all notes for a specific lead"
+    },
+    "POST /api/leads/[leadId]/notes": {
+      "method": "POST",
+      "path": "/api/leads/[leadId]/notes",
+      "params": [
+        "content"
+      ],
+      "file": "src/app/api/leads/[leadId]/notes/route.ts",
+      "description": "Add a new note to a lead"
+    }
+  }
+}

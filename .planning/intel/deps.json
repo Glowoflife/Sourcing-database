@@ -1,0 +1,58 @@
+{
+  "_meta": {
+    "updated_at": "2026-04-27T12:00:00Z",
+    "version": 1
+  },
+  "entries": {
+    "next": {
+      "version": "16.2.4",
+      "type": "production",
+      "invocation": "npm run dev / npm start",
+      "used_by": [
+        "Web Dashboard"
+      ]
+    },
+    "drizzle-orm": {
+      "version": "0.45.2",
+      "type": "production",
+      "invocation": "require",
+      "used_by": [
+        "src/db/index.ts",
+        "src/lib/queries/manufacturers.ts"
+      ]
+    },
+    "bullmq": {
+      "version": "^5.76.2",
+      "type": "production",
+      "invocation": "require",
+      "used_by": [
+        "src/workers/queues.ts",
+        "src/workers/index.ts"
+      ]
+    },
+    "crawlee": {
+      "version": "3.16.0",
+      "type": "production",
+      "invocation": "npm run acquire",
+      "used_by": [
+        "src/acquisition/site-crawler.ts"
+      ]
+    },
+    "@anthropic-ai/sdk": {
+      "version": "0.91.1",
+      "type": "production",
+      "invocation": "npm run extract",
+      "used_by": [
+        "src/extraction/index.ts"
+      ]
+    },
+    "ioredis": {
+      "version": "^5.10.1",
+      "type": "production",
+      "invocation": "require",
+      "used_by": [
+        "src/lib/redis.ts"
+      ]
+    }
+  }
+}

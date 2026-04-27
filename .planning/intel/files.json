@@ -1,0 +1,63 @@
+{
+  "_meta": {
+    "updated_at": "2026-04-27T12:00:00Z",
+    "version": 1
+  },
+  "entries": {
+    "src/db/schema.ts": {
+      "exports": [
+        "leadStatusEnum",
+        "sourcingStatusEnum",
+        "leads",
+        "manufacturers",
+        "products",
+        "locations",
+        "leadNotes"
+      ],
+      "imports": [
+        "drizzle-orm/pg-core"
+      ],
+      "type": "module"
+    },
+    "src/acquisition/site-crawler.ts": {
+      "exports": [
+        "crawlManufacturerSite"
+      ],
+      "imports": [
+        "crawlee",
+        "./html-to-markdown"
+      ],
+      "type": "module"
+    },
+    "src/extraction/index.ts": {
+      "exports": [
+        "extractManufacturerProfile"
+      ],
+      "imports": [
+        "@anthropic-ai/sdk",
+        "../db"
+      ],
+      "type": "module"
+    },
+    "src/workers/queues.ts": {
+      "exports": [
+        "acquisitionQueue",
+        "extractionQueue"
+      ],
+      "imports": [
+        "bullmq"
+      ],
+      "type": "module"
+    },
+    "src/app/api/leads/[leadId]/sourcing-status/route.ts": {
+      "exports": [
+        "PATCH"
+      ],
+      "imports": [
+        "next/server",
+        "../../../../db"
+      ],
+      "type": "entry-point"
+    }
+  }
+}

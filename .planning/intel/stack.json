@@ -1,0 +1,34 @@
+{
+  "_meta": {
+    "updated_at": "2026-04-27T12:00:00Z",
+    "version": 1
+  },
+  "languages": [
+    "TypeScript",
+    "SQL"
+  ],
+  "frameworks": [
+    "Next.js",
+    "React",
+    "Drizzle ORM",
+    "Tailwind CSS",
+    "BullMQ",
+    "Crawlee"
+  ],
+  "tools": [
+    "Redis",
+    "PostgreSQL",
+    "TanStack Table",
+    "Shadcn UI",
+    "Lucide Icons",
+    "Vitest"
+  ],
+  "build_system": "npm scripts",
+  "test_framework": "Vitest",
+  "package_manager": "npm",
+  "content_formats": [
+    "Markdown (HTML extraction)",
+    "JSON (crawling stats)",
+    "CSV (lead import)"
+  ]
+}

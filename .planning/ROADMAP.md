@@ -7,7 +7,7 @@
 - [x] **Phase 3: Technical Acquisition Pipeline** - HTML to Markdown conversion and job orchestration. *(Complete 2026-04-27)*
 - [x] **Phase 4: AI Extraction & Technical Profiling** - Deep technical data extraction from websites. *(Complete 2026-04-27)*
 - [x] **Phase 5: Search & Discovery Dashboard** - High-density browsing and detail views. *(Complete 2026-04-27)*
-- [ ] **Phase 6: Sourcing Workflow & Notes** - Decision support and team collaboration.
+- [x] **Phase 6: Sourcing Workflow & Notes** - Decision support and team collaboration. *(Complete 2026-04-27)*
 
 ---
 
@@ -41,10 +41,10 @@
 **Plans:** 2 plans in 2 waves
 
 **Wave 1:**
-- [ ] 06-01-PLAN.md — Workflow Infrastructure (Schema, API, and Data Layer) (CRM-03, CRM-04)
+- [x] 06-01-PLAN.md — Workflow Infrastructure (Schema, API, and Data Layer) (CRM-03, CRM-04) *(complete 2026-04-27)*
 
 **Wave 2:**
-- [ ] 06-02-PLAN.md — Workflow UI Integration (Dashboard filters and Detail Page interactions) (CRM-03, CRM-04)
+- [x] 06-02-PLAN.md — Workflow UI Integration (Dashboard filters and Detail Page interactions) (CRM-03, CRM-04) *(complete 2026-04-27)*
 
 ---
 
@@ -57,4 +57,4 @@
 | 3. Technical Acquisition Pipeline | 4/4 | Complete | 2026-04-27 |
 | 4. AI Extraction & Technical Profiling | 4/4 | Complete | 2026-04-27 |
 | 5. Search & Discovery Dashboard | 3/3 | Complete | 2026-04-27 |
-| 6. Sourcing Workflow & Notes | 0/2 | In progress | - |
+| 6. Sourcing Workflow & Notes | 2/2 | Complete | 2026-04-27 |
