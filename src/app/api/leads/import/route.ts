@@ -5,6 +5,9 @@ import { ImportRowSchema } from "@/schemas/import.schema";
 import { logger } from "@/lib/logger";
 
 const MAX_FILE_BYTES = 10 * 1024 * 1024; // 10 MB
+const MAX_ROWS = 5_000;
+const BATCH_SIZE = 500;
+const ALLOWED_MIME = new Set(["text/csv", "text/plain", "application/csv", ""]);
 
 export async function POST(request: Request) {
   const startedAt = Date.now();
@@ -41,12 +44,19 @@ export async function POST(request: Request) {
     );
   }
 
+  // WR-01: MIME type validation as a second signal
+  if (file.type && !ALLOWED_MIME.has(file.type)) {
+    logger.warn({ stage: "import", status: "fail", message: `invalid mime type: ${file.type}` });
+    return Response.json({ error: "File must be a CSV." }, { status: 415 });
+  }
+
   const buffer = Buffer.from(await file.arrayBuffer());
   let rows: unknown[];
 
   try {
     rows = parse(buffer, {
-      columns: true,
+      columns: ["name", "url"], // explicit list prevents prototype-pollution via header names
+      from_line: 2,             // skip the header row since columns are named explicitly
       skip_empty_lines: true,
       trim: true,
       bom: true, // RESEARCH.md Pitfall 2 — strip UTF-8 BOM from Excel exports
@@ -56,6 +66,14 @@ export async function POST(request: Request) {
     logger.warn({ stage: "import", status: "fail", message: "csv parse failed" });
     return Response.json(
       { error: "Could not read the file. Make sure it is a valid CSV with name and url columns." },
+      { status: 422 },
+    );
+  }
+
+  // CR-02: enforce row count cap before validation to limit memory usage
+  if (rows.length > MAX_ROWS) {
+    return Response.json(
+      { error: `CSV exceeds the ${MAX_ROWS}-row limit.` },
       { status: 422 },
     );
   }
@@ -74,13 +92,14 @@ export async function POST(request: Request) {
   });
 
   let inserted = 0;
-  if (validRows.length > 0) {
-    const result = await db
+  for (let i = 0; i < validRows.length; i += BATCH_SIZE) {
+    const batch = validRows.slice(i, i + BATCH_SIZE);
+    const batchResult = await db
       .insert(leads)
-      .values(validRows)
+      .values(batch)
       .onConflictDoNothing({ target: leads.url })
       .returning({ id: leads.id });
-    inserted = result.length;
+    inserted += batchResult.length;
   }
 
   const skipped = validRows.length - inserted;
