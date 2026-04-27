@@ -1,6 +1,6 @@
 import { Worker } from "bullmq";
 import type { Job } from "bullmq";
-import { redis } from "@/lib/redis";
+import { createRedisConnection } from "@/lib/redis";
 import { runAcquisitionJob } from "@/acquisition/index";
 import { AcquisitionJobSchema } from "@/acquisition/types";
 import { logger } from "@/lib/logger";
@@ -15,7 +15,7 @@ export const acquisitionWorker = new Worker(
     await runAcquisitionJob(parsed.data);
   },
   {
-    connection: redis,
+    connection: createRedisConnection(),
     concurrency: 3, // D-06: 3 concurrent Playwright workers
   },
 );
