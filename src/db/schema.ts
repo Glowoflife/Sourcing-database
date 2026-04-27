@@ -1,4 +1,4 @@
-import { integer, pgEnum, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, pgEnum, pgTable, serial, text, timestamp, unique } from "drizzle-orm/pg-core";
 
 export const leadStatusEnum = pgEnum("lead_status", [
   "New",
@@ -52,7 +52,7 @@ export const manufacturerPages = pgTable("manufacturer_pages", {
   pageType: pageTypeEnum("page_type").notNull(),
   markdownContent: text("markdown_content").notNull(),
   crawledAt: timestamp("crawled_at").notNull().defaultNow(),
-});
+}, (t) => [unique().on(t.leadId, t.url)]);
 
 export type ManufacturerPage = typeof manufacturerPages.$inferSelect;
 export type NewManufacturerPage = typeof manufacturerPages.$inferInsert;

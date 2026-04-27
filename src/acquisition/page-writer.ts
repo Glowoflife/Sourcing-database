@@ -11,6 +11,13 @@ export async function writePage(leadId: number, page: CrawledPage): Promise<void
     pageType: page.pageType,
     markdownContent: page.markdown,
     crawledAt: new Date(),
+  }).onConflictDoUpdate({
+    target: [manufacturerPages.leadId, manufacturerPages.url],
+    set: {
+      pageType: page.pageType,
+      markdownContent: page.markdown,
+      crawledAt: new Date(),
+    },
   });
 
   logger.info({
