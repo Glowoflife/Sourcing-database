@@ -4,7 +4,7 @@
 
 - [x] **Phase 1: Lead Foundation & Import** - Core schema and manual lead management. *(Complete 2026-04-27)*
 - [x] **Phase 2: Automated Discovery** - Chemexcil scraper for lead generation. *(Complete 2026-04-27)*
-- [ ] **Phase 3: Acquisition Pipeline** - HTML to Markdown conversion and job orchestration.
+- [x] **Phase 3: Acquisition Pipeline** - HTML to Markdown conversion and job orchestration. *(Complete 2026-04-27)*
 - [ ] **Phase 4: AI Extraction & Technical Profiling** - Deep technical data extraction from websites.
 - [ ] **Phase 5: Search & Discovery Dashboard** - High-density browsing and detail views.
 - [ ] **Phase 6: Sourcing Workflow & Notes** - Decision support and team collaboration.
@@ -77,7 +77,7 @@
 - [x] 03-03-PLAN.md — Acquisition types, site-crawler (bounded PlaywrightCrawler), page-writer, job handler *(complete 2026-04-27)*
 
 **Wave 4** *(blocked on Wave 3 completion)*:
-- [ ] 03-04-PLAN.md — BullMQ Worker (concurrency: 3), worker entry point, CLI enqueue script, smoke test
+- [x] 03-04-PLAN.md — BullMQ Worker (concurrency: 3), worker entry point, CLI enqueue script, smoke test *(complete 2026-04-27)*
 
 **Cross-cutting constraints:**
 - `dotenv` config call MUST be the first import in `src/acquisition/run.ts` and `src/workers/index.ts`
@@ -128,7 +128,7 @@
 |-------|----------------|--------|-----------|
 | 1. Lead Foundation & Import | 3/3 | Complete | 2026-04-27 |
 | 2. Automated Discovery | 2/2 | Complete | 2026-04-27 |
-| 3. Technical Acquisition Pipeline | 3/4 | Executing | - |
+| 3. Technical Acquisition Pipeline | 4/4 | Complete | 2026-04-27 |
 | 4. AI Extraction & Technical Profiling | 0/0 | Not started | - |
 | 5. Search & Discovery Dashboard | 0/0 | Not started | - |
 | 6. Sourcing Workflow & Notes | 0/0 | Not started | - |
