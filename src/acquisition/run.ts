@@ -21,9 +21,19 @@ async function main(): Promise<void> {
     return;
   }
 
-  // addBulk is atomic — all jobs added or none (prevents partial enqueue on Redis error)
+  // Filter out leads with no URL — url is notNull in schema but guard defensively
+  const validLeads = newLeads.filter((lead): lead is { id: number; url: string } => lead.url !== null);
+
+  if (validLeads.length === 0) {
+    logger.info({ stage: "acquire", status: "ok", message: "No New leads with valid URLs to enqueue" });
+    await acquisitionQueue.close();
+    return;
+  }
+
+  // addBulk uses a Redis pipeline — commands are batched for efficiency but NOT atomic.
+  // A partial failure will leave some jobs enqueued and others missing.
   await acquisitionQueue.addBulk(
-    newLeads.map((lead) => ({
+    validLeads.map((lead) => ({
       name: "acquire",
       data: { leadId: lead.id, url: lead.url },
     })),
@@ -32,7 +42,7 @@ async function main(): Promise<void> {
   logger.info({
     stage: "acquire",
     status: "ok",
-    message: `Enqueued ${newLeads.length} acquisition jobs`,
+    message: `Enqueued ${validLeads.length} acquisition jobs`,
   });
 
   // REQUIRED: close the Redis connection so the process exits cleanly

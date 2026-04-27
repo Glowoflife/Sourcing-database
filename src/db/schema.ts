@@ -10,7 +10,7 @@ export const leadStatusEnum = pgEnum("lead_status", [
 export const leads = pgTable("leads", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
-  url: text("url").unique(),
+  url: text("url").notNull().unique(),
   status: leadStatusEnum("status").notNull().default("New"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow().$onUpdateFn(() => new Date()),
