@@ -19,29 +19,36 @@ import {
   Globe,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { NotesSection } from "./notes-section";
 import type {
   ManufacturerProfile,
   Product,
   Contact,
   Location,
   ManufacturerPage,
+  LeadNote,
 } from "@/db/schema";
 
 interface DetailSectionsProps {
+  leadId: number;
   profile: ManufacturerProfile & {
     products: Product[];
     contacts: Contact[];
     locations: Location[];
   };
   pages: ManufacturerPage[];
+  notes: LeadNote[];
   leadUrl: string;
 }
 
-export function DetailSections({ profile, pages, leadUrl }: DetailSectionsProps) {
+export function DetailSections({ profile, pages, notes, leadId, leadUrl }: DetailSectionsProps) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 items-start">
       {/* Main Column */}
       <div className="space-y-12 min-w-0">
+        {/* Notes Section - Placed prominently at the top of the main column or below products */}
+        <NotesSection leadId={leadId} notes={notes} />
+
         {/* Products Section */}
         <section id="products" className="space-y-4">
           <div className="flex items-center gap-2">

@@ -30,9 +30,11 @@ export default async function ManufacturerDetailPage({
   return (
     <div className="max-w-[1600px] mx-auto px-4 md:px-8 py-8">
       <DetailHeader
+        leadId={leadId}
         name={manufacturer.name}
         url={manufacturer.url}
         status={manufacturer.status}
+        sourcingStatus={manufacturer.sourcingStatus}
         updatedAt={profile?.extractedAt || manufacturer.updatedAt}
         capacity={profile?.capacityMtPerYear || profile?.capacityRawText}
       />
@@ -49,8 +51,10 @@ export default async function ManufacturerDetailPage({
           </div>
         ) : (
           <DetailSections
+            leadId={leadId}
             profile={profile as any}
             pages={manufacturer.manufacturerPages || []}
+            notes={manufacturer.notes || []}
             leadUrl={manufacturer.url}
           />
         )}
