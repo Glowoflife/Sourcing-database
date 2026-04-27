@@ -2,19 +2,19 @@
 
 ## Project Reference
 **Core Value**: Automated discovery and deep technical profiling of the Indian chemical supply chain for data-driven procurement.
-**Current Focus**: Phase 2 complete. Ready to plan Phase 3 — Technical Acquisition Pipeline.
+**Current Focus**: Phase 5 search and discovery experience.
 
 ## Current Position
 
-**Phase**: 4 - AI Extraction & Technical Profiling
-**Plan**: Ready to execute (4/4 plans created)
-**Status**: Ready to execute
-**Progress**: [██████░░░░░░░░░░░░░░] 50% (3/6 phases complete — Phase 4 planned)
+**Phase**: 5 - Search & Discovery Dashboard
+**Plan**: 02 - Execution complete
+**Status**: In Progress
+**Progress**: [██████████░░░░░░░░░░] 75% (4/6 phases complete, Phase 5 in progress)
 
 ## Performance Metrics
-- **Requirements Covered**: 14/14 (v1)
+- **Requirements Covered**: 15/15 (v1)
 - **Phases Defined**: 6
-- **Completed Phases**: 3
+- **Completed Phases**: 4
 
 ## Accumulated Context
 
@@ -28,17 +28,22 @@
 - 2026-04-27: transformRequestFunction was available in installed Crawlee version — manual link extraction fallback not needed in site-crawler.ts.
 - 2026-04-27: acquisitionQueue.close() must be called after addBulk in run.ts — ioredis keeps connection open, preventing process exit without explicit close.
 - 2026-04-27: void shutdown() pattern used for SIGTERM/SIGINT handlers to satisfy unawaited_futures lint rule without floating promise.
+- 2026-04-27: extraction run.ts must call process.exit(0) after queue shutdown — pg/tsx handles kept the short-lived CLI alive otherwise.
+- 2026-04-27: Anthropic Haiku (`claude-haiku-4-5-20251001`) is now the primary Phase 4 extraction model when `ANTHROPIC_API_KEY` is present; OpenAI remains an optional fallback only.
+- 2026-04-27: The Anthropic extraction path now uses native Anthropic tool calls plus local Zod validation/retry because `@instructor-ai/instructor` crashed on the full production extraction schema during live verification.
+- 2026-04-27: Live Phase 4 verification used 3 real Chemexcil-seeded leads, produced 5 crawled pages, and persisted 3 manufacturer profiles with downstream child rows.
+- 2026-04-27: Phase 5 search uses debounced URL state sync with Server Component data fetching for the manufacturers list.
 
 ### Todos
-- [x] Initialize Phase 1 planning (`/gsd-plan-phase 1`) — 3 plans created 2026-04-27
-- [x] Plan Phase 2 (`/gsd-plan-phase 2`) — 2 plans created 2026-04-27
-- [x] Plan Phase 3 (`/gsd-plan-phase 3`) — 4 plans created 2026-04-27
-- [x] Research specific LLM prompts for chemical unit normalization (Phase 4 requirement) — resolved in 04-RESEARCH.md
-- [x] Plan Phase 4 (`/gsd-plan-phase 4`) — 4 plans created 2026-04-27
+- [x] Initialize Phase 1 planning (`/gsd-plan-phase 1`)
+- [x] Plan Phase 2 (`/gsd-plan-phase 2`)
+- [x] Plan Phase 3 (`/gsd-plan-phase 3`)
+- [x] Plan Phase 4 (`/gsd-plan-phase 4`)
+- [x] Plan Phase 5 (`/gsd-plan-phase 5`)
 
 ### Blockers
-- None
+- None.
 
 ## Session Continuity
-- **Last Action**: Phase 4 planned — 4 plans in 4 waves. Research identified instructor-js v1 + llm-polyglot adapter for Anthropic, GPT-4o-mini as primary model (350k char context cap), normalized DB schema (manufacturer_profiles + products + contacts + locations tables), BullMQ extraction worker mirroring acquisition.worker.ts pattern.
-- **Next Step**: Execute Phase 4 (`/gsd-execute-phase 4`).
+- **Last Action**: Completed Phase 05 Plan 02: Implemented Manufacturers List Page with advanced search and filters.
+- **Next Step**: Execute Phase 05 Plan 03: Implement Manufacturer Detail Page.

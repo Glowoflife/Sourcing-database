@@ -43,8 +43,10 @@ export function DetailHeader({
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1 hover:text-blue-600 transition-colors"
+              title="Website"
             >
               <Globe className="w-4 h-4" />
+              <span className="sr-only">Website:</span>
               {domain}
             </a>
             <span>•</span>

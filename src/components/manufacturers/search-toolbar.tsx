@@ -44,7 +44,7 @@ const CAPACITY_OPTIONS = [
   { label: "10,000+ MT/year", value: "10000+" },
 ];
 
-export function SearchToolbar() {
+export function SearchToolbar({ children }: { children?: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -146,6 +146,18 @@ export function SearchToolbar() {
             </Button>
           )}
         </div>
+      </div>
+
+      <div 
+        className="flex items-center gap-2 text-xs font-medium text-zinc-500 uppercase tracking-wider" aria-live="polite"
+      >
+        {children}
+        {activeFiltersCount > 0 && (
+          <>
+            <span className="size-1 rounded-full bg-zinc-300" />
+            <span className="text-blue-600">{activeFiltersCount} {activeFiltersCount === 1 ? "filter" : "filters"} applied</span>
+          </>
+        )}
       </div>
 
       {activeFiltersCount > 0 && (

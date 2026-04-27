@@ -34,6 +34,8 @@ export default async function ManufacturersPage(props: {
     : undefined;
   const page = typeof searchParams.page === "string" ? parseInt(searchParams.page) : 1;
 
+  const queryParams = { q, industry, status, location, capacity, page };
+
   return (
     <div className="mx-auto max-w-[1600px] px-4 py-8 md:px-8">
       <div className="flex flex-col gap-1">
@@ -44,58 +46,33 @@ export default async function ManufacturersPage(props: {
       </div>
 
       <div className="mt-8 space-y-6">
-        <SearchToolbar />
+        <SearchToolbar>
+          <Suspense fallback={<Skeleton className="h-4 w-32" />}>
+            <ResultCount {...queryParams} />
+          </Suspense>
+        </SearchToolbar>
         
         <Suspense key={JSON.stringify(searchParams)} fallback={<ListSkeleton />}>
-          <ManufacturersList 
-            q={q} 
-            industry={industry} 
-            status={status} 
-            location={location} 
-            capacity={capacity} 
-            page={page} 
-          />
+          <ManufacturersList {...queryParams} />
         </Suspense>
       </div>
     </div>
   );
 }
 
-async function ManufacturersList({ 
-  q, 
-  industry, 
-  status, 
-  location, 
-  capacity, 
-  page 
-}: { 
-  q?: string; 
-  industry?: string[]; 
-  status?: string[]; 
-  location?: string[]; 
-  capacity?: string[]; 
-  page: number 
-}) {
-  const { data, total } = await getManufacturers({ q, industry, status, location, capacity, page });
-  
-  const activeFiltersCount = 
-    (industry?.length || 0) +
-    (status?.length || 0) +
-    (location?.length || 0) +
-    (capacity?.length || 0);
+async function ResultCount(params: any) {
+  const { total } = await getManufacturers(params);
+  return (
+    <span>{total.toLocaleString()} {total === 1 ? "manufacturer" : "manufacturers"}</span>
+  );
+}
 
+async function ManufacturersList(params: any) {
+  const { data, total, totalPages } = await getManufacturers(params);
+  
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 text-xs font-medium text-zinc-500 uppercase tracking-wider">
-        <span>{total.toLocaleString()} {total === 1 ? "manufacturer" : "manufacturers"}</span>
-        {activeFiltersCount > 0 && (
-          <>
-            <span className="size-1 rounded-full bg-zinc-300" />
-            <span className="text-blue-600">{activeFiltersCount} {activeFiltersCount === 1 ? "filter" : "filters"} applied</span>
-          </>
-        )}
-      </div>
-      <ResultsTable data={data} />
+      <ResultsTable data={data} page={params.page} totalPages={totalPages} total={total} />
     </div>
   );
 }
@@ -103,9 +80,6 @@ async function ManufacturersList({
 function ListSkeleton() {
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <Skeleton className="h-4 w-32" />
-      </div>
       <div className="rounded-md border overflow-hidden">
         <div className="border-b px-4 py-3">
           <div className="flex gap-4">
@@ -129,7 +103,7 @@ function ListSkeleton() {
               <Skeleton className="h-4 w-[100px]" />
               <Skeleton className="h-4 w-[120px]" />
               <Skeleton className="h-4 w-[120px]" />
-              <Skeleton className="h-4 w-[80px] ml-auto" />
+              <Skeleton className="h-8 w-[80px] ml-auto" />
               <Skeleton className="h-6 w-[80px] rounded-full" />
             </div>
           </div>

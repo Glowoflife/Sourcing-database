@@ -45,9 +45,9 @@ export async function writeLead(
 }
 
 /**
- * Write a member with no website URL as an Errored lead.
- * url is null — allowed because leads.url is nullable (schema change in 02-01).
- * Per D-07: parse failures -> write Errored record + log structured warning.
+ * Count and log a member with no website URL as errored.
+ * leads.url is no longer nullable in the active schema, so we cannot persist a row
+ * without fabricating a placeholder URL.
  */
 export async function writeErroredLead(
   name: string | null,
@@ -57,14 +57,6 @@ export async function writeErroredLead(
 ): Promise<void> {
   counters.found++;
   counters.errored++;
-
-  if (name && name.length > 0) {
-    await db
-      .insert(leads)
-      .values({ name, url: null, status: "Errored" })
-      .onConflictDoNothing()
-      .returning({ id: leads.id });
-  }
 
   logger.warn({
     stage: "discovery",

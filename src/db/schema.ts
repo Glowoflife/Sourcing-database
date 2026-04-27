@@ -107,3 +107,52 @@ export type Contact = typeof contacts.$inferSelect;
 export type NewContact = typeof contacts.$inferInsert;
 export type Location = typeof locations.$inferSelect;
 export type NewLocation = typeof locations.$inferInsert;
+
+// Relations
+import { relations } from "drizzle-orm";
+
+export const leadsRelations = relations(leads, ({ one, many }) => ({
+  manufacturerProfiles: one(manufacturerProfiles, {
+    fields: [leads.id],
+    references: [manufacturerProfiles.leadId],
+  }),
+  manufacturerPages: many(manufacturerPages),
+}));
+
+export const manufacturerProfilesRelations = relations(manufacturerProfiles, ({ one, many }) => ({
+  lead: one(leads, {
+    fields: [manufacturerProfiles.leadId],
+    references: [leads.id],
+  }),
+  products: many(products),
+  contacts: many(contacts),
+  locations: many(locations),
+}));
+
+export const productsRelations = relations(products, ({ one }) => ({
+  profile: one(manufacturerProfiles, {
+    fields: [products.profileId],
+    references: [manufacturerProfiles.id],
+  }),
+}));
+
+export const contactsRelations = relations(contacts, ({ one }) => ({
+  profile: one(manufacturerProfiles, {
+    fields: [contacts.profileId],
+    references: [manufacturerProfiles.id],
+  }),
+}));
+
+export const locationsRelations = relations(locations, ({ one }) => ({
+  profile: one(manufacturerProfiles, {
+    fields: [locations.profileId],
+    references: [manufacturerProfiles.id],
+  }),
+}));
+
+export const manufacturerPagesRelations = relations(manufacturerPages, ({ one }) => ({
+  lead: one(leads, {
+    fields: [manufacturerPages.leadId],
+    references: [leads.id],
+  }),
+}));

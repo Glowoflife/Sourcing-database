@@ -1,6 +1,7 @@
 import { db } from "@/db";
 import { leads, locations, manufacturerProfiles, products } from "@/db/schema";
 import { and, eq, ilike, inArray, isNull, lt, gte, or, sql, desc, asc, countDistinct, arrayOverlaps } from "drizzle-orm";
+import { cache } from "react";
 
 /**
  * Fetch manufacturers with search, filtering and pagination.
@@ -13,7 +14,7 @@ import { and, eq, ilike, inArray, isNull, lt, gte, or, sql, desc, asc, countDist
  * - Capacity filter (bucketed).
  * - Pagination (50 per page).
  */
-export async function getManufacturers({
+export const getManufacturers = cache(async function getManufacturers({
   q,
   industry,
   status,
