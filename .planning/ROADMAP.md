@@ -49,7 +49,7 @@
 - [x] 02-01-PLAN.md — Schema migration (url nullable + scraper_runs table), crawlee/playwright install, db:push *(complete 2026-04-27)*
 
 **Wave 2** *(blocked on Wave 1 completion)*:
-- [ ] 02-02-PLAN.md — Discovery implementation: types.ts, lead-writer.ts, crawler.ts, run.ts (DISC-01)
+- [x] 02-02-PLAN.md — Discovery implementation: types.ts, lead-writer.ts, crawler.ts, run.ts (DISC-01) *(complete 2026-04-27)*
 
 **Cross-cutting constraints:**
 - `dotenv` config call MUST be the first executable statement in `src/discovery/run.ts` — before any `@/db` import
