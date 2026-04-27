@@ -74,7 +74,7 @@
 - [x] 03-02-PLAN.md — IORedis singleton, BullMQ Queue, html-to-markdown converter, TypeScript declaration *(complete 2026-04-27)*
 
 **Wave 3** *(blocked on Wave 2 completion)*:
-- [ ] 03-03-PLAN.md — Acquisition types, site-crawler (bounded PlaywrightCrawler), page-writer, job handler
+- [x] 03-03-PLAN.md — Acquisition types, site-crawler (bounded PlaywrightCrawler), page-writer, job handler *(complete 2026-04-27)*
 
 **Wave 4** *(blocked on Wave 3 completion)*:
 - [ ] 03-04-PLAN.md — BullMQ Worker (concurrency: 3), worker entry point, CLI enqueue script, smoke test
@@ -128,7 +128,7 @@
 |-------|----------------|--------|-----------|
 | 1. Lead Foundation & Import | 3/3 | Complete | 2026-04-27 |
 | 2. Automated Discovery | 2/2 | Complete | 2026-04-27 |
-| 3. Technical Acquisition Pipeline | 2/4 | Executing | - |
+| 3. Technical Acquisition Pipeline | 3/4 | Executing | - |
 | 4. AI Extraction & Technical Profiling | 0/0 | Not started | - |
 | 5. Search & Discovery Dashboard | 0/0 | Not started | - |
 | 6. Sourcing Workflow & Notes | 0/0 | Not started | - |

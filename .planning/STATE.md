@@ -7,9 +7,9 @@
 ## Current Position
 
 **Phase**: 3 - Technical Acquisition Pipeline
-**Plan**: 03-03 (next)
+**Plan**: 03-04 (next)
 **Status**: Executing
-**Progress**: [████░░░░░░░░░░░░░░░░] 33% (2/6 phases complete, 2/4 plans in Phase 3 complete)
+**Progress**: [████░░░░░░░░░░░░░░░░] 33% (2/6 phases complete, 3/4 plans in Phase 3 complete)
 
 ## Performance Metrics
 - **Requirements Covered**: 14/14 (v1)
@@ -25,6 +25,7 @@
 - 2026-04-27: .env.local is gitignored — REDIS_URL stored locally only (correct security posture for dev).
 - 2026-04-27: article.content (not article.textContent) used as Turndown input in htmlToMarkdown — preserves HTML table structure per D-04.
 - 2026-04-27: turndown-plugin-gfm has no @types package on npm — local .d.ts declaration file is the correct solution.
+- 2026-04-27: transformRequestFunction was available in installed Crawlee version — manual link extraction fallback not needed in site-crawler.ts.
 
 ### Todos
 - [x] Initialize Phase 1 planning (`/gsd-plan-phase 1`) — 3 plans created 2026-04-27
@@ -36,5 +37,5 @@
 - None
 
 ## Session Continuity
-- **Last Action**: Executed Phase 3 Plan 03-02 — created IORedis singleton (src/lib/redis.ts), BullMQ acquisition queue (src/workers/queues.ts), htmlToMarkdown converter (src/acquisition/html-to-markdown.ts), and turndown-plugin-gfm type declaration (src/types/turndown-plugin-gfm.d.ts). All 2 tasks complete, 2 commits made. npx tsc --noEmit exits 0.
-- **Next Step**: Execute Phase 3 Plan 03-03 (site crawler).
+- **Last Action**: Executed Phase 3 Plan 03-03 — created src/acquisition/types.ts (AcquisitionJobSchema + CrawledPageSchema), src/acquisition/page-writer.ts (writePage + updateLeadStatus), src/acquisition/site-crawler.ts (bounded PlaywrightCrawler with keyword filter), and src/acquisition/index.ts (BullMQ job handler with complete status machine). All 2 tasks complete, 2 commits made. npx tsc --noEmit exits 0.
+- **Next Step**: Execute Phase 3 Plan 03-04 (BullMQ Worker, worker entry point, CLI enqueue script, smoke test).
