@@ -6,10 +6,10 @@
 
 ## Current Position
 
-**Phase**: 3 - Technical Acquisition Pipeline
-**Plan**: Complete (4/4 plans done)
-**Status**: Phase Complete — Ready for Phase 4
-**Progress**: [██████░░░░░░░░░░░░░░] 50% (3/6 phases complete)
+**Phase**: 4 - AI Extraction & Technical Profiling
+**Plan**: Ready to execute (4/4 plans created)
+**Status**: Ready to execute
+**Progress**: [██████░░░░░░░░░░░░░░] 50% (3/6 phases complete — Phase 4 planned)
 
 ## Performance Metrics
 - **Requirements Covered**: 14/14 (v1)
@@ -33,11 +33,12 @@
 - [x] Initialize Phase 1 planning (`/gsd-plan-phase 1`) — 3 plans created 2026-04-27
 - [x] Plan Phase 2 (`/gsd-plan-phase 2`) — 2 plans created 2026-04-27
 - [x] Plan Phase 3 (`/gsd-plan-phase 3`) — 4 plans created 2026-04-27
-- [ ] Research specific LLM prompts for chemical unit normalization (Phase 4 requirement)
+- [x] Research specific LLM prompts for chemical unit normalization (Phase 4 requirement) — resolved in 04-RESEARCH.md
+- [x] Plan Phase 4 (`/gsd-plan-phase 4`) — 4 plans created 2026-04-27
 
 ### Blockers
 - None
 
 ## Session Continuity
-- **Last Action**: Phase 3 UAT complete — 7/7 tests passed. Code review fixes applied (9/9 findings resolved including BullMQ connection isolation, Zod validation, upsert idempotency, null URL guard). One post-fix bug found and fixed: dotenv import hoisting caused DATABASE_URL not set on cold start; fixed by switching npm scripts to `node --env-file=.env.local` (Node 20.6+ native). Phase 3 fully verified.
-- **Next Step**: Plan and execute Phase 4 (AI Extraction & Technical Profiling).
+- **Last Action**: Phase 4 planned — 4 plans in 4 waves. Research identified instructor-js v1 + llm-polyglot adapter for Anthropic, GPT-4o-mini as primary model (350k char context cap), normalized DB schema (manufacturer_profiles + products + contacts + locations tables), BullMQ extraction worker mirroring acquisition.worker.ts pattern.
+- **Next Step**: Execute Phase 4 (`/gsd-execute-phase 4`).
