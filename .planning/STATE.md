@@ -2,19 +2,19 @@
 
 ## Project Reference
 **Core Value**: Automated discovery and deep technical profiling of the Indian chemical supply chain for data-driven procurement.
-**Current Focus**: Executing Phase 2 — Automated Discovery.
+**Current Focus**: Phase 2 complete. Ready to plan Phase 3 — Technical Acquisition Pipeline.
 
 ## Current Position
 
-**Phase**: 2 - Automated Discovery
-**Plan**: 2 plans in 2 waves
-**Status**: Executing (Wave 1 of 2)
-**Progress**: [░░░░░░░░░░░░░░░░░░░░] 0%
+**Phase**: 3 - Technical Acquisition Pipeline
+**Plan**: TBD
+**Status**: Ready to plan
+**Progress**: [████░░░░░░░░░░░░░░░░] 33% (2/6 phases complete)
 
 ## Performance Metrics
 - **Requirements Covered**: 14/14 (v1)
 - **Phases Defined**: 6
-- **Completed Phases**: 0
+- **Completed Phases**: 2
 
 ## Accumulated Context
 
@@ -31,5 +31,5 @@
 - None
 
 ## Session Continuity
-- **Last Action**: Planned Phase 2 — 2 plans (02-01: schema migration + deps, 02-02: discovery implementation). PlaywrightCrawler required (Chemexcil JS-driven pagination). `leads.url` made nullable to support Errored records for URL-less members.
-- **Next Step**: Execute Phase 2 (`/gsd-execute-phase 2`).
+- **Last Action**: Phase 2 complete — Chemexcil discovery scraper fully implemented and smoke-tested. Key deviation: `drizzle.config.ts` uses `dotenv/config` (loads `.env` not `.env.local`); future `db:push` runs need `DATABASE_URL` injected explicitly. CSRF token expiry (Research Open Question 1) remains untested for full 185-page runs.
+- **Next Step**: Plan Phase 3 (`/gsd-discuss-phase 3` or `/gsd-plan-phase 3`).
