@@ -9,7 +9,7 @@ dependency_graph:
     - "Next.js 16 App Router project scaffold"
     - "Drizzle ORM + pg.Pool db singleton"
     - "leadStatusEnum PostgreSQL enum (New/Processing/Crawled/Errored)"
-    - "leads table with unique URL constraint"
+    - "leads table with unique URL constraint — verified live on Neon"
     - "Structured logger (LeadLogContext)"
   affects:
     - "01-02: CSV import API (uses src/db/schema.ts, src/db/index.ts)"
@@ -31,6 +31,7 @@ tech_stack:
     - "shadcn/ui initialized with --yes --defaults (Zinc color scheme)"
     - "Drizzle schema-first: $inferSelect/$inferInsert for TypeScript types"
     - "Module-level pg.Pool singleton (never inside route handler)"
+    - "drizzle-kit push (no migration files) for rapid schema iteration in dev"
 key_files:
   created:
     - "package.json"
@@ -54,17 +55,18 @@ decisions:
   - "Added ignoreDeprecations: 6.0 to tsconfig.json — TypeScript 6.0.3 deprecated baseUrl; this silences the error while keeping @/ alias working until TS7 migration"
   - "shadcn init added tw-animate-css, class-variance-authority, clsx, lucide-react, tailwind-merge to package.json — these are shadcn's standard dependencies accepted per plan"
   - "Next.js build updated tsconfig.json with allowJs, esModuleInterop, react-jsx, .next/types include — standard Next.js mutations, committed as-is"
+  - "Used drizzle-kit push (not migrate) for schema application — appropriate for greenfield dev with no migration history needed"
 metrics:
-  duration: "~10 minutes"
+  duration: "~15 minutes (including checkpoint for DATABASE_URL provision)"
   completed: "2026-04-27"
-  tasks_completed: 2
+  tasks_completed: 3
   tasks_total: 3
   files_created: 16
 ---
 
 # Phase 01 Plan 01: Project Bootstrap, Drizzle Schema, and Database Push Summary
 
-**One-liner:** Next.js 16 + Tailwind v4 + shadcn/ui scaffolded with Drizzle ORM schema defining `leadStatusEnum` (New/Processing/Crawled/Errored) and `leads` table with unique URL constraint; drizzle-kit push blocked on user-provisioned DATABASE_URL.
+**One-liner:** Next.js 16 + Tailwind v4 + shadcn/ui scaffolded with Drizzle ORM schema defining `leadStatusEnum` (New/Processing/Crawled/Errored) and `leads` table with unique URL constraint — all three tasks complete with live Neon PostgreSQL verification.
 
 ## Tasks Completed
 
@@ -73,7 +75,7 @@ metrics:
 | 1 | Scaffold Next.js 16 + Tailwind v4 + shadcn/ui | e7b9079 | package.json, tsconfig.json, next.config.ts, postcss.config.mjs, .gitignore, .env.example, components.json, src/app/* |
 | 2 | Define Drizzle schema + db singleton + logger | 9b52257 | src/db/schema.ts, src/db/index.ts, src/lib/logger.ts, drizzle.config.ts |
 | (chore) | Commit Next.js tsconfig mutations from npm run build | 366b74e | tsconfig.json |
-| 3 | drizzle-kit push | BLOCKED | Awaiting DATABASE_URL in .env.local |
+| 3 | drizzle-kit push to Neon PostgreSQL | (no file changes — DB-only operation) | Live DB: leads table + lead_status enum |
 
 ## Installed Package Versions
 
@@ -99,6 +101,20 @@ All packages installed at exact pinned versions — no fallbacks needed:
 - globals.css updated with full shadcn CSS variable set (dark mode vars included)
 - layout.tsx updated to use Geist font via `next/font/google`
 
+## Live Database Verification (Task 3)
+
+Provider: **Neon** (https://console.neon.tech) — free tier, serverless PostgreSQL
+
+`drizzle-kit push` output: `[✓] Changes applied`
+
+Node.js introspection result:
+```
+table: leads
+enum: New,Processing,Crawled,Errored
+```
+
+Both `SELECT to_regclass('public.leads')` and `SELECT unnest(enum_range(NULL::lead_status))` confirmed correct schema on the live database.
+
 ## Deviations from Plan
 
 ### Auto-fixed Issues
@@ -117,15 +133,11 @@ All packages installed at exact pinned versions — no fallbacks needed:
 - **Files modified:** tsconfig.json
 - **Commit:** 366b74e
 
-## Task 3: Awaiting DATABASE_URL (Checkpoint)
-
-Task 3 (drizzle-kit push) requires `DATABASE_URL` in `.env.local`. This value was not present.
-
-**Status:** BLOCKED — user must provision a free-tier PostgreSQL database and add `DATABASE_URL` to `.env.local`.
-
-**Provider recommended:** Neon (https://console.neon.tech) — instant free-tier setup, provides `postgres://` connection string compatible with `pg.Pool` and `drizzle-kit push`.
-
-**Resume command after providing DATABASE_URL:** `/gsd-execute-phase 1 --resume`
+**3. [Checkpoint] Task 3 required human action — DATABASE_URL provision**
+- **Found during:** Task 3 start
+- **Issue:** DATABASE_URL was not present in .env.local; drizzle-kit push cannot proceed without a live database connection string
+- **Resolution:** User provisioned Neon PostgreSQL and added DATABASE_URL to .env.local; resumed as continuation agent
+- **Impact:** No code changes; ~5 minute delay
 
 ## Security Posture
 
@@ -135,7 +147,7 @@ Task 3 (drizzle-kit push) requires `DATABASE_URL` in `.env.local`. This value wa
 | T-01-02: enum values fixed | Mitigated — exactly "New", "Processing", "Crawled", "Errored" |
 | T-01-03: logger does not log DATABASE_URL | Mitigated — logger.ts comment explicitly notes secret exclusion |
 | T-01-04: Pool not instantiated inside handler | Mitigated — module-level Pool in src/db/index.ts |
-| T-01-05: drizzle-kit push to wrong DB | Accepted — per plan |
+| T-01-05: drizzle-kit push to wrong DB | Accepted — confirmed correct Neon database via to_regclass introspection |
 
 ## Known Stubs
 
@@ -161,4 +173,6 @@ None — this plan establishes infrastructure only. No UI components with data s
 - [x] Commit e7b9079 exists: YES
 - [x] Commit 9b52257 exists: YES
 - [x] Commit 366b74e exists: YES
-- [ ] drizzle-kit push: PENDING (awaiting DATABASE_URL)
+- [x] drizzle-kit push: COMPLETE — [✓] Changes applied
+- [x] Live DB table: leads
+- [x] Live DB enum: New,Processing,Crawled,Errored
