@@ -14,8 +14,8 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "discover": "tsx src/discovery/run.ts",
-    "acquire": "tsx src/acquisition/run.ts",
-    "worker": "tsx src/workers/index.ts"
+    "acquire": "node --env-file=.env.local ./node_modules/.bin/tsx src/acquisition/run.ts",
+    "worker": "node --env-file=.env.local ./node_modules/.bin/tsx src/workers/index.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",
