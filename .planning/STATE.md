@@ -2,13 +2,13 @@
 
 ## Project Reference
 **Core Value**: Automated discovery and deep technical profiling of the Indian chemical supply chain for data-driven procurement.
-**Current Focus**: Initial roadmap creation and phase 1 planning.
+**Current Focus**: Executing Phase 2 — Automated Discovery.
 
 ## Current Position
 
 **Phase**: 2 - Automated Discovery
 **Plan**: 2 plans in 2 waves
-**Status**: Ready to execute
+**Status**: Executing (Wave 1 of 2)
 **Progress**: [░░░░░░░░░░░░░░░░░░░░] 0%
 
 ## Performance Metrics
