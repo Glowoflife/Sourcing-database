@@ -12,11 +12,11 @@ Automated discovery and deep technical profiling of the Indian chemical supply c
 
 ### Validated
 
-(None yet — ship to validate)
+- [x] **Discovery Engine**: Automated scraper for Chemexcil to identify supplier names and URLs. *Validated in Phase 2: Automated Discovery*
+- [x] **Acquisition Pipeline**: BullMQ-backed crawler that visits manufacturer websites, converts HTML to Markdown, and stores content in manufacturer_pages. *Validated in Phase 3: Technical Acquisition Pipeline*
 
 ### Active
 
-- [ ] **Discovery Engine**: Automated scraper for Chemexcil to identify supplier names and URLs.
 - [ ] **Extraction Pipeline**: AI-driven crawler to visit manufacturer websites and extract technical metadata (Products, Locations, Capacity).
 - [ ] **Central Database**: Structured storage for manufacturers, chemicals (with CAS numbers), and market intel.
 - [ ] **Internal Dashboard**: React-based web interface for searching, filtering, and managing supplier relationships.
@@ -47,4 +47,8 @@ Automated discovery and deep technical profiling of the Indian chemical supply c
 | Two-Stage Discovery | Chemexcil for leads + Deep Crawl for technical data | — Pending |
 
 ---
-*Last updated: April 27, 2026 after initial setup*
+## Current State
+
+Phase 3 complete — acquisition pipeline ships and smoke-tested. manufacturer_pages table live in Neon PostgreSQL. 4 code review defects (CR-01 through CR-04) logged for fix before Phase 4 runs at scale.
+
+*Last updated: 2026-04-27 after Phase 3 completion*
