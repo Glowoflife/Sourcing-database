@@ -3,7 +3,7 @@ import { htmlToMarkdown } from "@/acquisition/html-to-markdown";
 import type { CrawledPage } from "@/acquisition/types";
 
 // D-01: keyword pattern for link discovery (per CONTEXT.md decision)
-const KEYWORD_PATTERN = /product|about|company|catalogue|our.products/i;
+const KEYWORD_PATTERN = /product|about|company|catalogue|our[-.]products/i;
 
 /**
  * Crawl a manufacturer's homepage and follow up to 4 keyword-matched inner pages.
