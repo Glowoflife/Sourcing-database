@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { leads, locations, manufacturerProfiles, products } from "@/db/schema";
+import { leads, locations, manufacturerProfiles, products, leadNotes } from "@/db/schema";
 import { and, eq, ilike, inArray, isNull, lt, gte, or, sql, desc, asc, countDistinct, arrayOverlaps } from "drizzle-orm";
 import { cache } from "react";
 
@@ -18,6 +18,7 @@ export const getManufacturers = cache(async function getManufacturers({
   q,
   industry,
   status,
+  sourcingStatus,
   location,
   capacity,
   page = 1,
@@ -25,6 +26,7 @@ export const getManufacturers = cache(async function getManufacturers({
   q?: string;
   industry?: string[];
   status?: string[];
+  sourcingStatus?: string[];
   location?: string[];
   capacity?: string[];
   page?: number;
@@ -56,6 +58,10 @@ export const getManufacturers = cache(async function getManufacturers({
 
   if (status && status.length > 0) {
     whereConditions.push(inArray(leads.status, status as any));
+  }
+
+  if (sourcingStatus && sourcingStatus.length > 0) {
+    whereConditions.push(inArray(leads.sourcingStatus, sourcingStatus as any));
   }
 
   if (location && location.length > 0) {
@@ -151,7 +157,7 @@ export const getManufacturers = cache(async function getManufacturers({
     limit,
     totalPages: Math.ceil(total / limit),
   };
-}
+});
 
 /**
  * Fetch full details for a single manufacturer by leadId.
@@ -168,8 +174,35 @@ export async function getManufacturerDetail(leadId: number) {
         },
       },
       manufacturerPages: true,
+      notes: {
+        orderBy: [desc(leadNotes.createdAt)],
+      },
     },
   });
 
   return leadData;
+}
+
+/**
+ * Update the sourcing status of a lead.
+ */
+export async function updateLeadSourcingStatus(leadId: number, status: string) {
+  return await db
+    .update(leads)
+    .set({ sourcingStatus: status as any })
+    .where(eq(leads.id, leadId))
+    .returning();
+}
+
+/**
+ * Create a new note for a lead.
+ */
+export async function createLeadNote(leadId: number, content: string) {
+  return await db
+    .insert(leadNotes)
+    .values({
+      leadId,
+      content,
+    })
+    .returning();
 }
