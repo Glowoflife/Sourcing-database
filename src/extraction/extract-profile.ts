@@ -165,6 +165,13 @@ export async function extractProfile(
   }
 
   try {
+    // Anthropic first — its native tool-calling tolerates our nullable-field schema.
+    // DeepSeek's stricter OpenAI-compatible JSON-Schema validator rejects type:null,
+    // so it stays as a fallback only if Anthropic isn't configured.
+    if (anthropicClient) {
+      return await extractWithAnthropic(content, leadId);
+    }
+
     if (deepSeekInstructor) {
       return await deepSeekInstructor.chat.completions.create({
         model: DEEPSEEK_MODEL,
@@ -179,10 +186,6 @@ export async function extractProfile(
         max_retries: 2,
         temperature: 0,
       });
-    }
-
-    if (anthropicClient) {
-      return await extractWithAnthropic(content, leadId);
     }
 
     if (!openAIInstructor) {

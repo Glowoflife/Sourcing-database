@@ -4,6 +4,12 @@ import { ExtractedMemberSchema } from "@/discovery/types";
 import { logger } from "@/lib/logger";
 import type { RunCounters } from "@/discovery/lead-writer";
 
+declare global {
+  interface Window {
+    fetch_more?: (url: string, offset: string) => void;
+  }
+}
+
 export async function runCrawler(counters: RunCounters): Promise<void> {
   const crawler = new PlaywrightCrawler({
     // D-05: polite crawl — single concurrent request, max 20 req/min (= ~3s/page)
@@ -11,7 +17,7 @@ export async function runCrawler(counters: RunCounters): Promise<void> {
     maxConcurrency: 1,
     maxRequestsPerMinute: 20,
     maxRequestRetries: 3,
-    requestHandlerTimeoutSecs: 120,
+    requestHandlerTimeoutSecs: 600,
     launchContext: {
       launchOptions: { headless: true },
     },
@@ -22,30 +28,37 @@ export async function runCrawler(counters: RunCounters): Promise<void> {
       while (true) {
         log.info(`Scraping page ${pageNum}`);
 
-        // Wait for the member table to be present before extracting
-        await page.waitForSelector("#content table tr", { timeout: 30_000 });
+        // Wait for the member rows to be present
+        await page.waitForSelector("table.time-table tr.griderow1, table.time-table tr.griderow2", {
+          timeout: 30_000,
+        });
 
-        // Extract all member rows — verified selector from RESEARCH.md Code Examples
-        // Column layout: [0] company name, [1] middle column, [2] website URL
-        const rawMembers = await page.$$eval("#content table tr", (rows) =>
-          rows
-            .slice(1) // skip header row
-            .map((row) => {
+        // 2026 layout: 2-column table — [0] company name + profile link, [1] website URL or "-"
+        const rawMembers = await page.$$eval(
+          "table.time-table tr.griderow1, table.time-table tr.griderow2",
+          (rows) =>
+            rows.map((row) => {
               const cells = row.querySelectorAll("td");
               const name = cells[0]?.textContent?.trim() ?? null;
-              const urlAnchor = cells[2]?.querySelector("a");
-              const url = urlAnchor?.href ?? null;
-              return { name, url };
-            })
-            .filter((m) => m.name && m.name.length > 0),
+              const websiteAnchor = cells[1]?.querySelector("a");
+              const cellText = cells[1]?.textContent?.trim() ?? "";
+              const url = websiteAnchor?.href ?? null;
+              return { name, url, hasNoUrl: cellText === "-" || cellText === "" };
+            }),
         );
 
-        // Validate and write each member
         for (const raw of rawMembers) {
-          const parsed = ExtractedMemberSchema.safeParse(raw);
+          if (!raw.name) {
+            await writeErroredLead(null, pageNum, "missing_name", counters);
+            continue;
+          }
+          if (raw.hasNoUrl || !raw.url) {
+            await writeErroredLead(raw.name, pageNum, "missing_url", counters);
+            continue;
+          }
 
+          const parsed = ExtractedMemberSchema.safeParse({ name: raw.name, url: raw.url });
           if (!parsed.success) {
-            // name present but url failed Zod validation (malformed href) — treat as errored
             await writeErroredLead(
               raw.name,
               pageNum,
@@ -56,12 +69,9 @@ export async function runCrawler(counters: RunCounters): Promise<void> {
           }
 
           const member = parsed.data;
-
           if (member.url === null) {
-            // Member has no website — D-07: write Errored record
             await writeErroredLead(member.name, pageNum, "missing_url", counters);
           } else {
-            // Member has a URL — write New lead, dedup via onConflictDoNothing (D-03)
             await writeLead({ name: member.name, url: member.url }, counters);
           }
         }
@@ -72,9 +82,8 @@ export async function runCrawler(counters: RunCounters): Promise<void> {
           message: `page=${pageNum} extracted=${rawMembers.length} written=${counters.written} skipped=${counters.skipped} errored=${counters.errored}`,
         });
 
-        // --- Pagination: find the next page offset ---
-        // Chemexcil pagination uses javascript:fetch_more('url','offset') anchors
-        // Strategy: extract all available offsets, determine the next one to click
+        // Pagination: chemexcil uses javascript:fetch_more('url','offset') — call it directly
+        // rather than clicking the pseudo-anchor (which Playwright treats as not-visible).
         const allOffsets = await page.$$eval(
           "a[href^=\"javascript:fetch_more\"]",
           (links) =>
@@ -91,8 +100,6 @@ export async function runCrawler(counters: RunCounters): Promise<void> {
           break;
         }
 
-        // Current page displays offset = (pageNum - 1) * 20.
-        // The next page link is the smallest offset greater than the current page's start.
         const currentOffset = (pageNum - 1) * 20;
         const nextOffset = allOffsets
           .filter((o) => o > currentOffset)
@@ -103,30 +110,32 @@ export async function runCrawler(counters: RunCounters): Promise<void> {
           break;
         }
 
-        // Record the current row count to detect DOM update after click (Pitfall 2 mitigation)
-        const prevRowCount = await page.$$eval("#content table tr", (rows) => rows.length);
+        // Snapshot the first row's name so we can detect when AJAX has replaced it
+        const prevFirstRowName = await page.$eval(
+          "table.time-table tr.griderow1 td:first-child",
+          (el) => (el.textContent ?? "").trim(),
+        ).catch(() => "");
 
-        // Click the anchor for the next offset
-        const nextLink = await page.$(`a[href*="${nextOffset}"]`);
-        if (!nextLink) {
-          log.warning(`Could not find anchor for offset ${nextOffset}. Stopping.`);
-          break;
-        }
+        // Invoke fetch_more in page context — same effect as clicking the anchor
+        await page.evaluate((offset) => {
+          if (typeof window.fetch_more === "function") {
+            window.fetch_more("https://chemexcil.in/members/index", String(offset));
+          }
+        }, nextOffset);
 
-        await nextLink.click();
-
-        // Wait for AJAX response: row count must change to indicate DOM update
-        // Pitfall 2: must wait for #content to be replaced before next $$eval
+        // Wait for the table to update — first griderow1 name must change
         await page.waitForFunction(
           (prev) => {
-            const rows = document.querySelectorAll("#content table tr");
-            return rows.length !== prev;
+            const first = document.querySelector(
+              "table.time-table tr.griderow1 td:first-child",
+            );
+            return first ? (first.textContent ?? "").trim() !== prev : false;
           },
-          prevRowCount,
+          prevFirstRowName,
           { timeout: 30_000 },
         );
 
-        // D-05: 2-5s random delay between pages (on top of maxRequestsPerMinute)
+        // D-05: 2-5s random delay between pages
         const delayMs = 2_000 + Math.floor(Math.random() * 3_000);
         await page.waitForTimeout(delayMs);
 
@@ -139,8 +148,5 @@ export async function runCrawler(counters: RunCounters): Promise<void> {
     },
   });
 
-  // D-04: Crawlee RequestQueue is persisted to ./storage by default (CRAWLEE_STORAGE_DIR)
-  // Re-running after interruption resumes from the last unprocessed page.
-  // For a fresh run, purgeOnStart (Crawlee default) clears a completed queue automatically.
   await crawler.run(["https://chemexcil.in/members"]);
 }
