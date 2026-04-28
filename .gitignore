@@ -9,6 +9,7 @@ node_modules
 .pnp.*
 coverage
 next-env.d.ts
+tsconfig.tsbuildinfo
 
 # Crawlee runtime state (request queues, session pool, crawler statistics)
 storage/
