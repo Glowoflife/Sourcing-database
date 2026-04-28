@@ -1,6 +1,6 @@
 import type { ManufacturerPage } from "@/db/schema";
 import { buildPrompt } from "@/extraction/build-prompt";
-import { anthropicClient, deepSeekInstructor, openAIInstructor } from "@/extraction/instructor-client";
+import { anthropicClient, deepSeekClient, openAIInstructor } from "@/extraction/instructor-client";
 import { logger } from "@/lib/logger";
 import {
   ManufacturerExtractionSchema,
@@ -36,12 +36,17 @@ Rules:
 export { EXTRACTION_SYSTEM_PROMPT };
 
 const OPENAI_MODEL = "gpt-4o-mini";
-const DEEPSEEK_MODEL = "deepseek-v4-flash";
+const DEEPSEEK_MODEL = process.env.DEEPSEEK_MODEL ?? "deepseek-v4-flash";
 const ANTHROPIC_HAIKU_MODEL = "claude-haiku-4-5-20251001";
 const ANTHROPIC_MAX_TOKENS = 4096;
 const ANTHROPIC_MAX_ATTEMPTS = 3;
-const ANTHROPIC_TOOL_NAME = "submit_manufacturer_profile";
+const DEEPSEEK_MAX_ATTEMPTS = 3;
+const TOOL_NAME = "submit_manufacturer_profile";
+const TOOL_DESCRIPTION = "Submit the extracted manufacturer profile as structured data.";
 const ANTHROPIC_TOOL_SCHEMA = z.toJSONSchema(ManufacturerExtractionSchema) as Tool.InputSchema;
+// JSON Schema for OpenAI-compatible function tools (DeepSeek + OpenAI).
+// `as Record<string, unknown>` keeps it loose — the SDK's `parameters` field accepts any JSON Schema.
+const OPENAI_TOOL_SCHEMA = z.toJSONSchema(ManufacturerExtractionSchema) as Record<string, unknown>;
 
 function summarizeZodIssues(error: z.ZodError): string {
   return error.issues
@@ -88,7 +93,7 @@ async function extractWithAnthropic(content: string, leadId: number): Promise<Ma
       temperature: 0,
       system: `${EXTRACTION_SYSTEM_PROMPT}
 
-Return the final result by calling the ${ANTHROPIC_TOOL_NAME} tool exactly once.
+Return the final result by calling the ${TOOL_NAME} tool exactly once.
 Do not reply with prose, markdown, or partial JSON outside the tool call.`,
       messages: [
         {
@@ -105,14 +110,14 @@ Correct the payload and call the tool again.`
       ],
       tools: [
         {
-          name: ANTHROPIC_TOOL_NAME,
-          description: "Submit the extracted manufacturer profile as structured data.",
+          name: TOOL_NAME,
+          description: TOOL_DESCRIPTION,
           input_schema: ANTHROPIC_TOOL_SCHEMA,
         },
       ],
       tool_choice: {
         type: "tool",
-        name: ANTHROPIC_TOOL_NAME,
+        name: TOOL_NAME,
       },
     };
 
@@ -123,8 +128,8 @@ Correct the payload and call the tool again.`
       const text = getAnthropicText(response);
       lastError = new Error(
         text.length > 0
-          ? `Anthropic response did not include ${ANTHROPIC_TOOL_NAME}: ${text.slice(0, 500)}`
-          : `Anthropic response did not include ${ANTHROPIC_TOOL_NAME}`,
+          ? `Anthropic response did not include ${TOOL_NAME}: ${text.slice(0, 500)}`
+          : `Anthropic response did not include ${TOOL_NAME}`,
       );
       continue;
     }
@@ -149,6 +154,94 @@ Correct the payload and call the tool again.`
   throw lastError ?? new Error("Anthropic extraction failed without a response");
 }
 
+async function extractWithDeepSeek(content: string, leadId: number): Promise<ManufacturerExtraction> {
+  if (!deepSeekClient) {
+    throw new Error("DeepSeek client is not configured");
+  }
+
+  let validationFeedback: string | null = null;
+  let lastError: Error | null = null;
+
+  for (let attempt = 1; attempt <= DEEPSEEK_MAX_ATTEMPTS; attempt += 1) {
+    const userMessage = validationFeedback
+      ? `${content}
+
+Previous attempt failed schema validation with these errors:
+${validationFeedback}
+
+Correct the payload and call the tool again.`
+      : content;
+
+    const response = await deepSeekClient.chat.completions.create({
+      model: DEEPSEEK_MODEL,
+      temperature: 0,
+      messages: [
+        {
+          role: "system",
+          content: `${EXTRACTION_SYSTEM_PROMPT}
+
+Return the final result by calling the ${TOOL_NAME} tool exactly once.
+Do not reply with prose, markdown, or partial JSON outside the tool call.`,
+        },
+        { role: "user", content: userMessage },
+      ],
+      tools: [
+        {
+          type: "function",
+          function: {
+            name: TOOL_NAME,
+            description: TOOL_DESCRIPTION,
+            parameters: OPENAI_TOOL_SCHEMA,
+          },
+        },
+      ],
+      // "auto" works across DeepSeek's full lineup (chat, reasoner, v4-*).
+      // Forced tool_choice is rejected by deepseek-reasoner.
+      // The system prompt and retry loop ensure we still get a tool call.
+      tool_choice: "auto",
+    });
+
+    const toolCall = response.choices[0]?.message?.tool_calls?.[0];
+    if (!toolCall || toolCall.type !== "function") {
+      const text = response.choices[0]?.message?.content?.trim() ?? "";
+      lastError = new Error(
+        text.length > 0
+          ? `DeepSeek response did not include ${TOOL_NAME}: ${text.slice(0, 500)}`
+          : `DeepSeek response did not include ${TOOL_NAME}`,
+      );
+      continue;
+    }
+
+    let toolInput: unknown;
+    try {
+      toolInput = JSON.parse(toolCall.function.arguments);
+    } catch (parseErr) {
+      lastError = new Error(
+        `DeepSeek returned non-JSON tool arguments: ${String(parseErr)}`,
+      );
+      continue;
+    }
+
+    const parsed = ManufacturerExtractionSchema.safeParse(toolInput);
+    if (parsed.success) {
+      return parsed.data;
+    }
+
+    validationFeedback = summarizeZodIssues(parsed.error);
+    lastError = new Error(
+      `DeepSeek extraction payload failed validation on attempt ${attempt}: ${validationFeedback}`,
+    );
+    logger.warn({
+      stage: "extract",
+      status: "fail",
+      leadId,
+      message: lastError.message,
+    });
+  }
+
+  throw lastError ?? new Error("DeepSeek extraction failed without a response");
+}
+
 export async function extractProfile(
   leadId: number,
   pages: ManufacturerPage[],
@@ -165,27 +258,14 @@ export async function extractProfile(
   }
 
   try {
-    // Anthropic first — its native tool-calling tolerates our nullable-field schema.
-    // DeepSeek's stricter OpenAI-compatible JSON-Schema validator rejects type:null,
-    // so it stays as a fallback only if Anthropic isn't configured.
-    if (anthropicClient) {
-      return await extractWithAnthropic(content, leadId);
+    // Provider order: DeepSeek (primary) → Anthropic → OpenAI.
+    // Each independently configurable via env vars; the first available wins.
+    if (deepSeekClient) {
+      return await extractWithDeepSeek(content, leadId);
     }
 
-    if (deepSeekInstructor) {
-      return await deepSeekInstructor.chat.completions.create({
-        model: DEEPSEEK_MODEL,
-        messages: [
-          { role: "system", content: EXTRACTION_SYSTEM_PROMPT },
-          { role: "user", content },
-        ],
-        response_model: {
-          schema: ManufacturerExtractionSchema,
-          name: "ManufacturerProfile",
-        },
-        max_retries: 2,
-        temperature: 0,
-      });
+    if (anthropicClient) {
+      return await extractWithAnthropic(content, leadId);
     }
 
     if (!openAIInstructor) {

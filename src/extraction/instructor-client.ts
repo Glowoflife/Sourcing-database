@@ -26,10 +26,10 @@ export const anthropicClient = anthropicApiKey
   ? new Anthropic({ apiKey: anthropicApiKey })
   : null;
 
-// DeepSeek instructor — uses the OpenAI SDK against an OpenAI-compatible endpoint.
-export const deepSeekInstructor = deepseekApiKey
-  ? Instructor({
-      client: new OpenAI({ apiKey: deepseekApiKey, baseURL: deepseekBaseUrl }),
-      mode: "TOOLS",
-    })
+// DeepSeek raw OpenAI client (NOT instructor-wrapped).
+// DeepSeek's strict JSON-Schema validator rejected instructor's auto-converted schema
+// (`type: null` for nullable fields). Phase 4 calls DeepSeek with direct tool calls
+// and re-validates the response with Zod locally — same pattern used for Anthropic.
+export const deepSeekClient = deepseekApiKey
+  ? new OpenAI({ apiKey: deepseekApiKey, baseURL: deepseekBaseUrl })
   : null;
