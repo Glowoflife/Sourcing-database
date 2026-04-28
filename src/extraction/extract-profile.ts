@@ -1,6 +1,6 @@
 import type { ManufacturerPage } from "@/db/schema";
 import { buildPrompt } from "@/extraction/build-prompt";
-import { anthropicClient, openAIInstructor } from "@/extraction/instructor-client";
+import { anthropicClient, deepSeekInstructor, openAIInstructor } from "@/extraction/instructor-client";
 import { logger } from "@/lib/logger";
 import {
   ManufacturerExtractionSchema,
@@ -36,6 +36,7 @@ Rules:
 export { EXTRACTION_SYSTEM_PROMPT };
 
 const OPENAI_MODEL = "gpt-4o-mini";
+const DEEPSEEK_MODEL = "deepseek-v4-flash";
 const ANTHROPIC_HAIKU_MODEL = "claude-haiku-4-5-20251001";
 const ANTHROPIC_MAX_TOKENS = 4096;
 const ANTHROPIC_MAX_ATTEMPTS = 3;
@@ -164,6 +165,22 @@ export async function extractProfile(
   }
 
   try {
+    if (deepSeekInstructor) {
+      return await deepSeekInstructor.chat.completions.create({
+        model: DEEPSEEK_MODEL,
+        messages: [
+          { role: "system", content: EXTRACTION_SYSTEM_PROMPT },
+          { role: "user", content },
+        ],
+        response_model: {
+          schema: ManufacturerExtractionSchema,
+          name: "ManufacturerProfile",
+        },
+        max_retries: 2,
+        temperature: 0,
+      });
+    }
+
     if (anthropicClient) {
       return await extractWithAnthropic(content, leadId);
     }

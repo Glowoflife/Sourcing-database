@@ -22,7 +22,7 @@ export async function writeLead(
   counters.found++;
   const result = await db
     .insert(leads)
-    .values({ name: member.name, url: member.url, status: "New" })
+    .values({ name: member.name, url: member.url, status: "New", source: "chemexcil" })
     .onConflictDoNothing({ target: leads.url })
     .returning({ id: leads.id });
 

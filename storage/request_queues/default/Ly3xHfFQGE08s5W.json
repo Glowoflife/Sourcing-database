@@ -1,9 +1,0 @@
-{
-	"id": "Ly3xHfFQGE08s5W",
-	"json": "{\"id\":\"Ly3xHfFQGE08s5W\",\"url\":\"http://www.5escientific.com/\",\"loadedUrl\":\"http://www.5escientific.com/\",\"uniqueKey\":\"http://www.5escientific.com\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"label\":\"HOMEPAGE\",\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-27T13:27:58.337Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "http://www.5escientific.com",
-	"url": "http://www.5escientific.com/"
-}

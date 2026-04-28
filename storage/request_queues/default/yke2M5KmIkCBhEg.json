@@ -1,9 +1,0 @@
-{
-	"id": "yke2M5KmIkCBhEg",
-	"json": "{\"id\":\"yke2M5KmIkCBhEg\",\"url\":\"http://www.kilpest.com/\",\"loadedUrl\":\"https://www.kilpest.com/\",\"uniqueKey\":\"http://www.kilpest.com\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"label\":\"HOMEPAGE\",\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-27T13:27:59.500Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "http://www.kilpest.com",
-	"url": "http://www.kilpest.com/"
-}

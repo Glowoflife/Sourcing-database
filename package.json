@@ -31,6 +31,7 @@
     "crawlee": "3.16.0",
     "csv-parse": "6.2.1",
     "drizzle-orm": "0.45.2",
+    "exceljs": "^4.4.0",
     "ioredis": "^5.10.1",
     "jsdom": "^29.1.0",
     "llm-polyglot": "2.6.0",

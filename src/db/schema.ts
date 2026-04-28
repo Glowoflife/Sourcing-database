@@ -22,6 +22,7 @@ export const leads = pgTable("leads", {
   url: text("url").notNull().unique(),
   status: leadStatusEnum("status").notNull().default("New"),
   sourcingStatus: sourcingStatusEnum("sourcing_status").notNull().default("Unqualified"),
+  source: text("source").notNull().default("chemexcil"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow().$onUpdateFn(() => new Date()),
 });
